@@ -1,3 +1,3 @@
 class AppInfo {
-  String appName;
+  String appName = "";
 }
