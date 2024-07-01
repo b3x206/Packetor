@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class UrlPreviewPage extends StatefulWidget {
-  final String url;
+  final String? url;
 
-  const UrlPreviewPage({Key key, this.url}) : super(key: key);
+  const UrlPreviewPage({Key? swKey, this.url}) : super(key: swKey);
 
   @override
   _UrlPreviewPageState createState() => _UrlPreviewPageState();
@@ -71,11 +71,12 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
     );
   }
 
-  String _parseHostAndPath() {
-    if (widget.url == null || widget.url.isEmpty) {
+  String? _parseHostAndPath() {
+    if (widget.url == null || widget.url!.isEmpty) {
       return null;
     }
-    var uri = Uri.parse(widget.url);
+
+    var uri = Uri.parse(widget.url!);
     if (uri.scheme == null || uri.scheme.isEmpty) {
       return "UNKNOWN";
     }
@@ -83,18 +84,18 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
   }
 
   _buildQueryParameters() {
-    if (widget.url == null || widget.url.isEmpty) {
+    if (widget.url == null || widget.url!.isEmpty) {
       return Container(
         child: _buildStatusItem("parameter", "参数为空"),
       );
     }
-    var queryParameters = Uri.parse(widget.url).queryParameters;
+    var queryParameters = Uri.parse(widget.url!).queryParameters;
     if (queryParameters == null || queryParameters.length == 0) {
       return Container(
         child: _buildStatusItem("parameter", "参数为空"),
       );
     }
-    List<Widget> widgets = List();
+    List<Widget> widgets = <Widget>[];
     queryParameters.forEach((key, value) {
       widgets.add(_buildStatusItem(key, value));
       widgets.add(Divider());
@@ -189,7 +190,7 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
     );
   }
 
-  String _getKeyAndValue(String key, String value) {
+  String _getKeyAndValue(String? key, String? value) {
     return (key ?? "null") + "=" + (value ?? "null");
   }
 
@@ -205,7 +206,7 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
                   ],
                 ),
                 actions: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text("复制"),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: value));
@@ -213,7 +214,7 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
                       Navigator.of(context).pop();
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text("关闭"),
                     onPressed: () {
                       Navigator.of(context).pop();

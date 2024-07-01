@@ -6,10 +6,10 @@ import 'package:packet_capture_flutter/model/nat_session_request.pb.dart';
 import 'package:packet_capture_flutter/pages/detail/packet_detail_bottom_radio.dart';
 
 class PacketDetailRequest extends StatefulWidget {
-  final NatSessionRequest request;
+  final NatSessionRequest? request;
 
-  const PacketDetailRequest({Key key, this.request})
-      : super(key: key);
+  const PacketDetailRequest({Key? swKey, this.request})
+      : super(key: swKey);
 
   @override
   _PacketDetailRequestState createState() => _PacketDetailRequestState();
@@ -17,7 +17,7 @@ class PacketDetailRequest extends StatefulWidget {
 
 class _PacketDetailRequestState extends State<PacketDetailRequest> {
   int _current = 0;
-  List<String> _options = List<String>();
+  List<String> _options = <String>[];
 
   @override
   void initState() {
@@ -94,6 +94,7 @@ class _PacketDetailRequestState extends State<PacketDetailRequest> {
   }
 
   String _buildRequestHeaders() {
+    // TODO : Stub method
     var result = "";
     return result;
   }
@@ -104,8 +105,8 @@ class _PacketDetailRequestState extends State<PacketDetailRequest> {
   }
 
   _getHeadersOption() {
-    List<Widget> headers = List();
-    _getHeaderMap()?.forEach((String key, String value) {
+    List<Widget> headers = <Widget>[];
+    _getHeaderMap().forEach((String key, String value) {
       var single = _getHeader(key, value);
       headers.add(single);
       headers.add(Divider());
@@ -199,7 +200,7 @@ class _PacketDetailRequestState extends State<PacketDetailRequest> {
             ],
           ),
                 actions: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text("复制"),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: value));
@@ -207,7 +208,7 @@ class _PacketDetailRequestState extends State<PacketDetailRequest> {
                       Navigator.of(context).pop();
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text("关闭"),
                     onPressed: () {
                       Navigator.of(context).pop();

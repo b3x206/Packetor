@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 /// A simple sexy FloatingActionButton
 class SexyFab extends StatefulWidget {
-  final IndexedWidgetBuilder itemBuilder;
-  final int itemCount;
-  final String tooltip;
-  final IconData icon;
+  final IndexedWidgetBuilder? itemBuilder;
+  final int? itemCount;
+  final String? tooltip;
+  final IconData? icon;
 
   SexyFab({this.itemBuilder, this.tooltip, this.icon, this.itemCount});
 
@@ -15,10 +15,10 @@ class SexyFab extends StatefulWidget {
 
 class _SexyFabState extends State<SexyFab> with SingleTickerProviderStateMixin {
   bool isOpened = false;
-  AnimationController _animationController;
-  Animation<Color> _buttonColor;
-  Animation<double> _animateIcon;
-  Animation<double> _translateButton;
+  AnimationController? _animationController;
+  Animation<Color?>? _buttonColor;
+  Animation<double>? _animateIcon;
+  Animation<double>? _translateButton;
   Curve _curve = Curves.easeOut;
   double _fabHeight = 56.0;
 
@@ -30,12 +30,12 @@ class _SexyFabState extends State<SexyFab> with SingleTickerProviderStateMixin {
             setState(() {});
           });
     _animateIcon =
-        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController!);
     _buttonColor = ColorTween(
       begin: Colors.blue,
       end: Colors.red,
     ).animate(CurvedAnimation(
-      parent: _animationController,
+      parent: _animationController!,
       curve: Interval(
         0.00,
         1.00,
@@ -46,7 +46,7 @@ class _SexyFabState extends State<SexyFab> with SingleTickerProviderStateMixin {
       begin: _fabHeight,
       end: -14.0,
     ).animate(CurvedAnimation(
-      parent: _animationController,
+      parent: _animationController!,
       curve: Interval(
         0.0,
         0.75,
@@ -58,16 +58,17 @@ class _SexyFabState extends State<SexyFab> with SingleTickerProviderStateMixin {
 
   @override
   dispose() {
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 
   _animate() {
     if (!isOpened) {
-      _animationController.forward();
+      _animationController!.forward();
     } else {
-      _animationController.reverse();
+      _animationController!.reverse();
     }
+
     isOpened = !isOpened;
   }
 
@@ -75,36 +76,37 @@ class _SexyFabState extends State<SexyFab> with SingleTickerProviderStateMixin {
     return Container(
       child: FloatingActionButton(
         heroTag: 'toggle',
-        backgroundColor: _buttonColor.value,
+        backgroundColor: _buttonColor?.value,
         onPressed: _animate,
         tooltip: 'Toggle',
         child: AnimatedIcon(
           icon: AnimatedIcons.menu_close,
-          progress: _animateIcon,
+          progress: _animateIcon!,
         ),
       ),
     );
   }
 
   Widget _buildItem(int index) {
-    if (index < 0 || index >= widget.itemCount) {
+    if (index < 0 || index >= (widget.itemCount ?? -1)) {
       throw new Exception(
           "index is negative or overflow, expected lower than ${widget.itemCount}, but actually is $index");
     }
-    return widget.itemBuilder(context, index);
+    return widget.itemBuilder!(context, index);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> items = List();
-    for (int i = 0; i < widget.itemCount; i++) {
+    List<Widget> items = <Widget>[];
+
+    for (int i = 0; i < widget.itemCount!; i++) {
       Widget item = Transform(
         transform: Matrix4.translationValues(
           0.0,
-          _translateButton.value * (widget.itemCount - i),
+          _translateButton!.value * (widget.itemCount! - i),
           0.0,
         ),
-        child: widget.itemBuilder(context, i),
+        child: widget.itemBuilder!(context, i),
       );
       items.add(item);
     }

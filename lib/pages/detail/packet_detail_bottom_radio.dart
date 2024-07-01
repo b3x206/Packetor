@@ -7,23 +7,24 @@ typedef OnRadioReselect(int position);
 class PacketDetailBottomRadioGroup extends StatefulWidget {
   final int length;
   final int selected;
-  final RadioItemBuilder radioBuilder;
-  final OnRadioSelect onRadioSelect;
-  final OnRadioReselect onRadioReselect;
+  final RadioItemBuilder? radioBuilder;
+  final OnRadioSelect? onRadioSelect;
+  final OnRadioReselect? onRadioReselect;
 
   const PacketDetailBottomRadioGroup(
-      {Key key,
-      length,
-      selected,
-      this.onRadioSelect,
-      this.onRadioReselect,
-      this.radioBuilder})
-      : length = length ?? 0,
+      {
+        Key? swKey,
+        length,
+        selected,
+        this.onRadioSelect,
+        this.onRadioReselect,
+        this.radioBuilder
+      }) : length = length ?? 0,
         selected = selected != null
             ? (selected < 0 ? 0 : (selected < length ? selected : length - 1))
             : 0,
         assert(radioBuilder != null),
-        super(key: key);
+        super(key: swKey);
 
   @override
   _PacketDetailBottomRadioGroupState createState() =>
@@ -54,9 +55,10 @@ class _PacketDetailBottomRadioGroupState
 
   List<Widget> _buildRadios() {
     if (widget.length == 0) {
-      return List(0);
+      return <Widget>[];
     }
-    var list = List<Widget>();
+
+    var list = <Widget>[];
     for (int i = 0; i < widget.length; i++) {
       Widget radio = _buildRadio(i);
       list.add(radio);
@@ -72,9 +74,13 @@ class _PacketDetailBottomRadioGroupState
         setState(() {
           this._current = position;
         });
-        widget?.onRadioSelect(position);
+        if (widget.onRadioReselect != null) {
+          widget.onRadioSelect!(position);
+        }
         if (_last == position) {
-          widget?.onRadioReselect(position);
+          if (widget.onRadioReselect != null) {
+            widget.onRadioSelect!(position);
+          }
         } else {
           _last = temp;
         }
@@ -82,7 +88,7 @@ class _PacketDetailBottomRadioGroupState
       child: Container(
         color: position == _current ? Colors.white : Colors.grey.withAlpha(80),
         padding: EdgeInsets.symmetric(vertical: 11, horizontal: 8),
-        child: Center(child: widget.radioBuilder(position)),
+        child: Center(child: widget.radioBuilder!(position)),
       ),
     ));
   }

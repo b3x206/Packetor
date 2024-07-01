@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,9 @@ import 'package:packet_capture_flutter/pages/detail/packet_detail_page.dart';
 import 'package:packet_capture_flutter/utils/TimeFormatUtil.dart';
 
 class PacketListPage extends StatefulWidget {
-  final NatSessions sessions;
+  final NatSessions? sessions;
 
-  const PacketListPage({Key key, this.sessions}) : super(key: key);
+  const PacketListPage({Key? swKey, this.sessions}) : super(key: swKey);
 
   @override
   _PacketListPageState createState() => _PacketListPageState();
@@ -36,7 +37,7 @@ class _PacketListPageState extends State<PacketListPage> {
 
   _buildBody() {
     return ListView.separated(
-        itemCount: widget.sessions?.session?.length ?? 0,
+        itemCount: widget.sessions?.session.length ?? 0,
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int position) {
           return _buildItem(context, position);
@@ -67,7 +68,7 @@ class _PacketListPageState extends State<PacketListPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        widget.sessions?.session[position]?.appInfo?.appName ??
+                        widget.sessions?.session[position].appInfo.appName ??
                             '未知应用',
                         style: TextStyle(
                             color: Colors.black,
@@ -76,7 +77,7 @@ class _PacketListPageState extends State<PacketListPage> {
                       ),
                       Expanded(
                         child: Text(
-                          '${formatDate(widget.sessions?.session[position]?.connectionStartTime)}',
+                          '${formatDate(widget.sessions?.session[position].connectionStartTime)}',
                           style: TextStyle(color: Colors.black38, fontSize: 14),
                           textAlign: TextAlign.end,
                         ),
@@ -127,7 +128,8 @@ class _PacketListPageState extends State<PacketListPage> {
                           ),
                           Text(
                             _getTransferDataSize(
-                                widget.sessions?.session[position]),
+                              widget.sessions?.session[position]
+                            ),
                             style:
                                 TextStyle(color: Colors.black54, fontSize: 15),
                           ),
@@ -142,7 +144,7 @@ class _PacketListPageState extends State<PacketListPage> {
     );
   }
 
-  String _getTransferDataSize(NatSession session) {
+  String _getTransferDataSize(NatSession? session) {
     if (session == null) {
       return '';
     }
@@ -158,7 +160,7 @@ class _PacketListPageState extends State<PacketListPage> {
     return size;
   }
 
-  String _getSessionState(NatSession session) {
+  String _getSessionState(NatSession? session) {
     if (session == null) {
       return '无响应';
     }
@@ -169,7 +171,7 @@ class _PacketListPageState extends State<PacketListPage> {
     }
   }
 
-  String _getSessionType(NatSession session) {
+  String _getSessionType(NatSession? session) {
     if (session == null) {
       return 'unknown';
     }
@@ -177,13 +179,13 @@ class _PacketListPageState extends State<PacketListPage> {
     if (session.type == 'TCP') {
       type = session.method;
     }
-    if (type == null || type.isEmpty) {
+    if (type.isEmpty) {
       type = 'TYPE';
     }
     return type;
   }
 
-  String _getSessionUrl(NatSession session) {
+  String _getSessionUrl(NatSession? session) {
     if (session == null) {
       return 'some host';
     }
@@ -194,7 +196,7 @@ class _PacketListPageState extends State<PacketListPage> {
     return url;
   }
 
-  String _getIpAndPort(NatSession session) {
+  String _getIpAndPort(NatSession? session) {
     if (session == null) {
       return 'unknown host';
     }
@@ -206,7 +208,7 @@ class _PacketListPageState extends State<PacketListPage> {
       return Container();
     }
     return Image.memory(
-      widget.sessions.session[position].appInfo.icon,
+      Uint8List.fromList((widget.sessions?.session[position].appInfo.icon)!),
       width: 50,
       height: 50,
       fit: BoxFit.cover,
@@ -214,7 +216,7 @@ class _PacketListPageState extends State<PacketListPage> {
     );
   }
 
-  String formatDate(Int64 time) {
+  String formatDate(Int64? time) {
     if (time == null) {
       return '';
     }
@@ -224,15 +226,15 @@ class _PacketListPageState extends State<PacketListPage> {
   }
 
   _gotoPacketDetailPage(int position) {
-    NatSession session = widget.sessions.session[position];
+    NatSession session = widget.sessions!.session[position];
     if (session.type != Constants.TCP) {
       Fluttertoast.showToast(msg: '暂时只支持查看 TCP 类型请求');
       return;
     }
     String dir = Constants.DATA_DIR +
-        TimeFormatUtil.format(widget.sessions.session[position].vpnStartTime) +
+        TimeFormatUtil.format(widget.sessions!.session[position].vpnStartTime) +
         "/" +
-        widget.sessions.session[position].uniqueName;
+        widget.sessions!.session[position].uniqueName;
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
       return PacketDetailPage(

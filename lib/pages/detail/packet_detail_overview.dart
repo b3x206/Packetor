@@ -6,12 +6,12 @@ import 'package:packet_capture_flutter/model/nat_session_request.pb.dart';
 import 'package:packet_capture_flutter/pages/detail/url_preview_page.dart';
 
 class PacketDetailOverview extends StatefulWidget {
-  final NatSessions sessions;
-  final int index;
-  final NatSessionRequest request;
+  final NatSessions? sessions;
+  final int? index;
+  final NatSessionRequest? request;
 
-  const PacketDetailOverview({Key key, this.sessions, this.index, this.request})
-      : super(key: key);
+  const PacketDetailOverview({Key? swKey, this.sessions, this.index, this.request})
+      : super(key: swKey);
 
   @override
   _PacketDetailOverviewState createState() => _PacketDetailOverviewState();
@@ -112,14 +112,11 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
   }
 
   String _getResponseDataSize() {
-    return widget.sessions.session[widget.index].receivedByteNum.toString() +
-      "B" ??
-        '245B';
+    return widget.sessions!.session[widget.index!].receivedByteNum.toString() + "B";
   }
 
   String _getRequestDataSize() {
-    return widget.sessions.session[widget.index].bytesSent.toString() + "B" ??
-        '0.94KB';
+    return widget.sessions!.session[widget.index!].bytesSent.toString() + "B";
   }
 
   String _getRequestDuration() {
@@ -132,15 +129,13 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
 
   String _getRequestStartTime() {
     return DateTime.fromMillisecondsSinceEpoch(widget
-                .sessions.session[widget.index].connectionStartTime
+                .sessions!.session[widget.index!].connectionStartTime
                 .toInt())
-            .toIso8601String() ??
-        '2019-01-02 00:21:39.350';
+            .toIso8601String();
   }
 
   String _getRemoteIP() {
-    return widget.sessions.session[widget.index].remoteIP.toString() ??
-        '127.0.0.1:8080';
+    return widget.sessions!.session[widget.index!].remoteIP.toString();
   }
 
   String _getContentTypeDownStream() {
@@ -152,8 +147,7 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
   }
 
   String _getRemoteHost() {
-    return widget.sessions.session[widget.index].remoteHost ??
-        'https://www.baidu.com';
+    return widget.sessions!.session[widget.index!].remoteHost;
   }
 
   String _getProtocol() {
@@ -169,13 +163,13 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
   }
 
   String _getRequestUrl() {
-    var requestUrl = widget.sessions.session[widget.index].requestUrl;
-    if (requestUrl == null || requestUrl.isEmpty) {
-      var host = widget.sessions.session[widget.index].remoteHost;
+    var requestUrl = widget.sessions!.session[widget.index!].requestUrl;
+    if (requestUrl.isEmpty) {
+      String? host = widget.sessions?.session[widget.index!].remoteHost;
       if (host != null && host.isNotEmpty) {
         return host;
       }
-      return "https://blog.54yongf.com";
+      return "https://example.com";
     }
     return requestUrl;
   }
@@ -232,28 +226,30 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-                title: Text(key),
+          title: Text(key),
           content: ListView(
             shrinkWrap: true,
             children: <Widget>[
               Text(value),
             ],
           ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text("复制"),
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: value));
-                      Fluttertoast.showToast(msg: '已复制至粘贴板');
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  FlatButton(
-                    child: Text("关闭"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ]));
+          actions: <Widget>[
+            TextButton(
+              child: Text("复制"),
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: value));
+                Fluttertoast.showToast(msg: '已复制至粘贴板');
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("关闭"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ]
+        )
+      );
   }
 }

@@ -9,24 +9,24 @@ import 'package:packet_capture_flutter/pages/detail/packet_detail_overview.dart'
 import 'package:packet_capture_flutter/pages/detail/packet_detail_request.dart';
 import 'package:packet_capture_flutter/pages/detail/packet_detail_response.dart';
 import 'package:packet_capture_flutter/session/nat_session_delegate.dart';
-import 'package:share/share.dart';
+// import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PacketDetailPage extends StatefulWidget {
-  final NatSessions sessions;
-  final int index;
-  final String sessionPath;
+  final NatSessions? sessions;
+  final int? index;
+  final String? sessionPath;
 
-  const PacketDetailPage({Key key, this.sessions, this.index, this.sessionPath})
-      : super(key: key);
+  const PacketDetailPage({Key? swKey, this.sessions, this.index, this.sessionPath})
+      : super(key: swKey);
 
   @override
   _PacketDetailPageState createState() => _PacketDetailPageState();
 }
 
-class _PacketDetailPageState extends State<PacketDetailPage>
-    with SingleTickerProviderStateMixin {
-  TabController _tabController;
-  NatSessionRequests _sessionRequests;
+class _PacketDetailPageState extends State<PacketDetailPage> with SingleTickerProviderStateMixin {
+  TabController? _tabController;
+  NatSessionRequests? _sessionRequests;
 
   // TODO: NatSessionResponses
 
@@ -41,10 +41,8 @@ class _PacketDetailPageState extends State<PacketDetailPage>
   Future<void> _refreshSession() async {
     var result;
     try {
-      ByteData message = await NatSessionDelegate().requestSessionByDir(
-        widget.sessionPath);
-      List<int> bytes = message.buffer
-          .asUint8List(message.offsetInBytes, message.lengthInBytes);
+      ByteData message = await NatSessionDelegate().requestSessionByDir(widget.sessionPath!);
+      List<int> bytes = message.buffer.asUint8List(message.offsetInBytes, message.lengthInBytes);
       result = NatSessionRequests.fromBuffer(bytes);
     } on PlatformException catch (e) {
       debugPrint('PlatformException: ${e.message}');
@@ -104,21 +102,22 @@ class _PacketDetailPageState extends State<PacketDetailPage>
         index: widget.index,
         request: _sessionRequests?.request != null ? _sessionRequests?.request[0] : null,
       ),
+      // TODO : Null values will crash this most likely
       PacketDetailRequest(
-        request: _retrieveRequest(),
+        request: _retrieveRequest()!,
       ),
       PacketDetailResponse(
-        response: _retrieveResponse(),
+        response: _retrieveResponse()!,
       ),
     ]);
   }
 
   /// 从列表中获取第一个类型是 request 的
-  NatSessionRequest _retrieveRequest() {
+  NatSessionRequest? _retrieveRequest() {
     if (_sessionRequests == null) {
       return null;
     }
-    for (var request in _sessionRequests.request) {
+    for (NatSessionRequest? request in _sessionRequests!.request) {
       if (request != null && request.isRequest) {
         return request;
       }
@@ -127,11 +126,11 @@ class _PacketDetailPageState extends State<PacketDetailPage>
   }
 
   /// 从列表中获取第一个类型是 response 的
-  NatSessionRequest _retrieveResponse() {
+  NatSessionRequest? _retrieveResponse() {
     if (_sessionRequests == null) {
       return null;
     }
-    for (var response in _sessionRequests.request) {
+    for (NatSessionRequest? response in _sessionRequests!.request) {
       if (response != null && !response.isRequest) {
         return response;
       }
@@ -143,12 +142,13 @@ class _PacketDetailPageState extends State<PacketDetailPage>
   void dispose() {
     super.dispose();
 
-    _tabController.dispose();
+    _tabController?.dispose();
   }
 
   _saveSession() async {
     try {
-      bool result = await NatSessionDelegate().saveSession(null, null);
+      // bool result = await NatSessionDelegate().saveSession(null, null);
+      bool result = await NatSessionDelegate().saveSession(NatSession(), "");
       Fluttertoast.showToast(msg: result ? "成功了" : "失败了");
     } on PlatformException catch (e) {
       /// TODO: 错误处理

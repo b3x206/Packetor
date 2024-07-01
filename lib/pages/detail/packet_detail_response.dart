@@ -6,10 +6,10 @@ import 'package:packet_capture_flutter/model/nat_session_request.pb.dart';
 import 'package:packet_capture_flutter/pages/detail/packet_detail_bottom_radio.dart';
 
 class PacketDetailResponse extends StatefulWidget {
-  final NatSessionRequest response;
+  final NatSessionRequest? response;
 
-  const PacketDetailResponse({Key key, this.response})
-      : super(key: key);
+  const PacketDetailResponse({Key? swKey, this.response})
+      : super(key: swKey);
 
   @override
   _PacketDetailResponseState createState() => _PacketDetailResponseState();
@@ -17,7 +17,7 @@ class PacketDetailResponse extends StatefulWidget {
 
 class _PacketDetailResponseState extends State<PacketDetailResponse> {
   int _current = 0;
-  List<String> _options = List<String>();
+  List<String> _options = <String>[];
 
   @override
   void initState() {
@@ -103,8 +103,8 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
   }
 
   _getHeadersOption() {
-    List<Widget> headers = List();
-    _getHeaderMap()?.forEach((String key, String value) {
+    List<Widget> headers = <Widget>[];
+    _getHeaderMap().forEach((String key, String value) {
       var single = _getHeader(key, value);
       headers.add(single);
       headers.add(Divider());
@@ -176,8 +176,7 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
   }
 
   _getPreviewOption() {
-    if (widget.response == null || widget.response.bodyStr == null
-      || widget.response.bodyStr.isEmpty) {
+    if (widget.response == null || (widget.response?.bodyStr.isEmpty ?? true)) {
       return Center(
         child: Text('不支持预览'),
       );
@@ -292,7 +291,7 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
             ],
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text("复制"),
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: value));
@@ -300,7 +299,7 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text("关闭"),
               onPressed: () {
                 Navigator.of(context).pop();

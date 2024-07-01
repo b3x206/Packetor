@@ -6,13 +6,13 @@ import 'package:packet_capture_flutter/session/nat_session_manager.dart';
 
 class NatSessionDelegate {
   /// The resource identifier
-  String _identifier;
+  String _identifier = "";
 
   /// The resource file name
-  String _name;
+  String _name = "";
 
   /// Original data
-  ByteData _data;
+  ByteData? _data;
 
   /// The BinaryChannel name
   String get _channel {
@@ -25,30 +25,34 @@ class NatSessionDelegate {
 
   Future<dynamic> requestSessions() async {
     Completer completer = new Completer();
-    BinaryMessages.setMessageHandler(_channel, (ByteData message) {
+    // BinaryMessages
+    var bMessages = ServicesBinding.instance.defaultBinaryMessenger;
+    bMessages.setMessageHandler(_channel, (ByteData? message) {
       _data = message;
       completer.complete(message);
-      BinaryMessages.setMessageHandler(_channel, null);
+      bMessages.setMessageHandler(_channel, null);
     });
 
     NatSessionManager().requestSessions();
     return completer.future;
   }
 
-  Future<dynamic> requestSessionByDir(String dir) async {
+  Future<dynamic> requestSessionByDir(String? dir) async {
     if (dir == null || dir.isEmpty) {
       return null;
     }
+    
+    var bMessages = ServicesBinding.instance.defaultBinaryMessenger;
     Completer completer = Completer();
-    BinaryMessages.setMessageHandler(_sessionChannel, (ByteData message) {
+    bMessages.setMessageHandler(_sessionChannel, (ByteData? message) {
       completer.complete(message);
-      BinaryMessages.setMessageHandler(_sessionChannel, null);
+      bMessages.setMessageHandler(_sessionChannel, null);
     });
     NatSessionManager().requestSession(dir);
     return completer.future;
   }
 
-  Future<dynamic> saveSession(NatSession session, String dir) async {
+  Future<dynamic> saveSession(NatSession? session, String? dir) async {
     if (session == null || dir == null || dir.isEmpty) {
       return null;
     }

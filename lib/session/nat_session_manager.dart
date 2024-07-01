@@ -5,10 +5,10 @@ import 'package:packet_capture_flutter/model/nat_session.pb.dart';
 
 class NatSessionManager {
   /// The resource identifier
-  String _identifier;
+  String? _identifier;
 
   /// The resource file name
-  String _name;
+  String? _name;
 
   /// 单例模式
   static final NatSessionManager _singleton = NatSessionManager._internal();
@@ -35,7 +35,9 @@ class NatSessionManager {
   Future<dynamic> saveSession(NatSession session, String dir) async {
     Uint8List list = session.writeToBuffer();
     var data = ByteData.view(list.buffer);
-    await BinaryMessages.send(_sessionChannelName, data);
+    var bMessages = ServicesBinding.instance.defaultBinaryMessenger;
+    
+    await bMessages.send(_sessionChannelName, data);
     var param = {"dir": dir};
     return await _sessionChannel.invokeMethod("saveSession", Map.of(param));
   }

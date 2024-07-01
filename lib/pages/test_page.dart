@@ -48,7 +48,8 @@ class _TestPageState extends State<TestPage> {
               style: Theme
                 .of(context)
                 .textTheme
-                .display1,
+                // .display1,
+                .displayLarge,
             ),
           ],
         ),

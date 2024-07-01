@@ -12,9 +12,9 @@ import 'package:packet_capture_flutter/widget/sexy_fab.dart';
 
 /// 首页：请求列表
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  final String? title;
 
-  final String title;
+  HomePage({Key? swKey, this.title}) : super(key: swKey);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -26,8 +26,8 @@ class _HomePageState extends State<HomePage> {
   String _batteryLevel = 'Unknown battery level.';
   bool _isPacketMode = false;
   String _title = '';
-  NatSessions _protobuf;
-  Timer _refreshTimer;
+  NatSessions? _protobuf;
+  Timer? _refreshTimer;
   bool _enableAutoRefresh = false;
 
   Future<Null> _getBatteryLevel() async {
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     _isPacketMode = false;
-    _title = widget.title;
+    _title = widget.title!;
     _platform.setMethodCallHandler(_handleMethod);
     _refreshTimer = Timer.periodic(Duration(milliseconds: 800), (timer) {
       if (_enableAutoRefresh) {
@@ -69,7 +69,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     super.dispose();
-    _refreshTimer.cancel();
+
+    _refreshTimer?.cancel();
   }
 
   @override
@@ -242,7 +243,7 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       padding: EdgeInsets.only(top: 5),
       child: PacketListPage(
-        sessions: _protobuf,
+        sessions: _protobuf!,
       ),
     );
   }
