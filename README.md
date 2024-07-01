@@ -1,19 +1,20 @@
-# packet_capture_flutter
+# Packetor
 
 Packet Capture Flutter
 
-## Getting Started
+## Building
+### Desktop
+It probably won't even work on desktop, but it does build fine.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+### Android
+#### Step 1 :
+If the generated [proto files contained here](./lib/model/) are erroring out;
+- Ensure that protobuf is installed, if not, install using your package manager.
+- Ensure that the 
+#### Step 2 : 
+Install a specific version of Java (JDK <=10 for me) or anything depending on [the gradle version thing](https://docs.gradle.org/8.8-rc-1/userguide/compatibility.html).
+#### Step N :
+TODO, yes. Still doesn't build.
 
 ## Key Features
 

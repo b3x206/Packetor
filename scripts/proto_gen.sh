@@ -6,15 +6,15 @@ if [ ! command -v "protoc" &> /dev/null ] then
     exit 1
 fi
 
-if [ ! command -v "protoc" &> /dev/null ] then
-    # Install dart protoc plugin
-    dart pub global activate protoc_plugin
-    dart_install_result= $?
-    if [ ($dart_install_result) -ne 0 ] then
-        echo "failed to install 'protoc_plugin', install manually."
-        exit 1
-    fi
-fi
+# if [ ! command -v "protoc-gen-dart" &> /dev/null ] then
+#     # Install dart protoc plugin
+#     dart pub global activate protoc_plugin
+#     dart_install_result= $?
+#     if [ ($dart_install_result) -ne 0 ] then
+#         echo "failed to install 'protoc_plugin', install manually."
+#         exit 1
+#     fi
+# fi
 
 function main {
     protoc --dart_out="./lib/model" "./android/app/src/main/proto/nat_session.proto"
@@ -25,4 +25,4 @@ function main {
     echo proto generated success. ^_^
 }
 
-# main
+main
