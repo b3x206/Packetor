@@ -46,7 +46,7 @@ android {
 
     defaultConfig {
         applicationId "com.yongf.flutter.packetcaptureflutter"
-        minSdkVersion 19
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

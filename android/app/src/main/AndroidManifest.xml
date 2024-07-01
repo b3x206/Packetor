@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application xmlns:tools="http://schemas.android.com/tools"
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="Packetor"
         tools:replace="android:label">
@@ -26,6 +26,9 @@
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
+            <meta-data
+                android:name="flutterEmbedding"
+                android:value="2" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
