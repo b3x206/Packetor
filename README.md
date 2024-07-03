@@ -7,63 +7,73 @@ Packet Capture Flutter
 It probably won't even work on desktop, but it does build fine.
 
 ### Android
+#### Step 0 :
+Remove your will to live, because that's how android building works. <br>
+Also the ""very good"" android emulator won't work and will segfault if you are unfortunate enough to have a Windows 10 PC with broken tpm, amd ryzen and 7238457239578932 gazillions of SDK's installed to your device. Because apparently virtualization is hard and [so are build systems. <sup>just replace the microservices with another process/call to an external library that does 732935 things and exits silently with segfault and the title is "Gradle/Android Emulator"</sup>](https://www.reddit.com/r/ProgrammerHumor/comments/72fwhc/modern_application_architecture/)
 #### Step 1 :
-If the generated [proto files contained here](./lib/model/) are erroring out;
-- Ensure that protobuf is installed, if not, install using your package manager.
-- Ensure that the 
-#### Step 2 : 
-Install a specific version of Java (JDK <=10 for me) or anything depending on [the gradle version thing](https://docs.gradle.org/8.8-rc-1/userguide/compatibility.html).
+If the generated [proto files contained here](./lib/model/) are **erroring out;** <br>
+**[!!]** Again, *you should* **ONLY DO THIS IF THE PROTO FILES ARE ERRORING OUT :**
+- Ensure that `protobuf` is installed on your system, if not, install using your package manager.
+- Windows :
+- - ```(scoop bucket add extras) -and (scoop install protobuf)```
+- Linux using APT :
+- - ```apt install protobuf # or whatever the package is called idk```
+- Ensure that the dart addon is installed for the protobuf, if not install using
+- - ```dart pub global activate protoc_plugin```
+- After all of these, run the [script contained here for your respective OS, I recommend that you use 'pwsh' regardless because 'bash' script is outdated](./scripts)
+- If the script works, new protobuf library wrappers will be generated (i suppose that's what the script does) and you will have the files checked out. (with git)
+
 #### Step N :
-TODO, yes. Still doesn't build.
+TODO, yes. Still doesn't build. When figured out, will update.
 
 ## Key Features
-
-1. http 抓包
-2. https 抓包
-3. 网络请求会话保存
-    1. powered by Android Jetpack#Room
+1. Http packet capture
+2. Https packet capture
+3. Network request session save
+    1. powered by Android Jetpack # Room
 4. tcpdump
-5. 网络请求保存
-    1. 保存为 url
-    2. 保存为 curl request
-    3. 保存为 charles 请求格式
-    4. 保存为 postman 请求格式
-    5. 保存为标准 HTTP 文本格式（参考 postman）
-    6. 支持批量保存
-6. 代码生成
-    1. 生成C语言代码
-    2. 生成 curl 请求
-    3. 生成 C# 请求代码
-    4. 生成 Go 请求代码
-    5. 生成 Java 请求代码，支持 Okhttp, Retrofit
-    6. 生成 JavaScript 请求代码，支持 ajax, xhr
-    7. 生成 NodeJS 请求代码
-    8. 生成 Objective-C 请求代码
-    9. 生成 PHP 请求代码
-    10. 生成 Python 请求代码
-    11. 生成 Ruby 请求代码
-    12. 生成 Shell 请求代码，支持 wget, Httpie, cURL
-    13. 生成 Swift 请求代码
-    14. 生成 Kotlin 请求代码
-    15. 支持批量代码生成
-7. Overview，参考 Charles
-8. Request，参考 Charles
-9. Response，参考 Charles
-10. Summary，参考 Charles
-11. Chart，参考 Charles
-12. Notes，参考 Charles
-13. 全面参考 Charles 的功能，移动端全能 Charles
-14. 实现请求收藏功能
-15. 实现请求重发功能
+5. Network request save
+    1. Save as url
+    2. Save as curl request
+    3. Save as charles request format
+    4. Save as postman request format
+    5. Save as standard HTTP text format (refer to postman)
+6. Support batch save
+7. Code generation
+    1. Generate C language code
+    2. Generate curl request
+    3. Generate C# request code
+    4. Generate Go request code
+    5. Generate Java request code, support Okhttp, Retrofit
+    6. Generate JavaScript request code, support ajax, xhr
+    7. Generate NodeJS request code
+    8. Generate Objective-C request code
+    9. Generate PHP request code
+    10. Generate Python request code
+    11. Generate Ruby request code
+    12. Generate Shell request code, support wget, Httpie, cURL
+    13. Generate Swift request code
+    14. Generate Kotlin request code
+    15. Generate batch/shell scripting code
+8. Overview, refer to Charles
+9. Request, refer to Charles
+10. Response, refer to Charles
+11. Summary, refer to Charles
+12. Chart, refer to Charles
+13. Notes, refer to Charles
+14. Fully refer to Charles' functions, Charles is the all-powerful mobile terminal
+15. Who is Charles? idk really but he seems great. (perhaps a lib)
+16. Implement the request collection function.
+17. Implement the request resend function.
 
-## 站在巨人的肩膀上
+## 站在巨人的肩膀上 or standing on the shoulders of giants
+- [(巨人 || Giant) 1](http://example.com/?where)
+- [(巨人 || Giant) 2](http://example.com/?is%20the%20giants%3Fwho%20knows)
+- [(巨人 || Giant) 3](https://bit.ly/mrbreast)
 
-- [巨人1]()
-- [巨人2]()
-- [巨人3]()
-
-## 数据结构
-
+## Data Structure
+This is the data structure used on the app. <br>
+Probably related with the saving functionality.
 ```json
 [
   {
@@ -112,6 +122,6 @@ TODO, yes. Still doesn't build.
 ```
 
 ## TODO List
+1. Use mmap to record requests in real time and save them to a file, and then read the data from the file for display?
+2. Fix the data confusion problem ...
 
-1. 使用 mmap 实时记录请求保存到文件中，展示的时候从文件中读取数据进行展示？
-2. 修复数据错乱的问题。。。

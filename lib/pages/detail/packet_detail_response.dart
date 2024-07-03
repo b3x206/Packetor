@@ -111,7 +111,7 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
     });
     if (headers.length == 0) {
       return Center(
-        child: Text("无数据"),
+        child: Text("No Data"),
       );
     }
     return ListView(
@@ -158,9 +158,9 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
   }
 
   _getTextOption() {
-    var text = widget.response?.bodyStr ?? "无数据";
+    var text = widget.response?.bodyStr ?? "No Data";
     if (text.isEmpty) {
-      text = "无数据";
+      text = "No Data";
     }
     return Center(
       child: Container(
@@ -171,14 +171,14 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
 
   _getHexOption() {
     return Center(
-      child: Text('功能开发中，敬请期待'),
+      child: Text('TODO : Implement getHexOption'),
     );
   }
 
   _getPreviewOption() {
     if (widget.response == null || (widget.response?.bodyStr.isEmpty ?? true)) {
       return Center(
-        child: Text('不支持预览'),
+        child: Text('Preview not supported for this response.'),
       );
     }
     return Container(
@@ -247,7 +247,7 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    Fluttertoast.showToast(msg: "敬请期待~");
+                    Fluttertoast.showToast(msg: "TODO");
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -255,7 +255,7 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
                       color: Colors.green,
                       height: 120,
                       child: Center(
-                        child: Text("敬请期待",
+                        child: Text("TODO",
                           style: TextStyle(
                             color: Colors.white, fontSize: 18,),),
                       ),
@@ -292,15 +292,15 @@ class _PacketDetailResponseState extends State<PacketDetailResponse> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("复制"),
+              child: Text("Copy"),
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: value));
-                Fluttertoast.showToast(msg: '已复制至粘贴板');
+                Fluttertoast.showToast(msg: 'Copied to clipboard');
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("关闭"),
+              child: Text("Back"),
               onPressed: () {
                 Navigator.of(context).pop();
               },

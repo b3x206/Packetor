@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:packet_capture_flutter/model/nat_session.pb.dart';
@@ -10,7 +9,7 @@ class NatSessionManager {
   /// The resource file name
   String? _name;
 
-  /// 单例模式
+  /// Singleton based 'NatSessionManager
   static final NatSessionManager _singleton = NatSessionManager._internal();
 
   factory NatSessionManager() {

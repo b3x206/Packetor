@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,7 +62,7 @@ class _PacketDetailPageState extends State<PacketDetailPage> with SingleTickerPr
           child: Icon(Icons.arrow_back),
         ),
         title: Text(
-          '抓包内容',
+          'Packet capture content',
           style: TextStyle(fontSize: 18),
         ),
         actions: <Widget>[
@@ -84,13 +83,13 @@ class _PacketDetailPageState extends State<PacketDetailPage> with SingleTickerPr
   _buildBottom() {
     return TabBar(controller: _tabController, tabs: <Widget>[
       Tab(
-        text: "总览",
+        text: "Overview",
       ),
       Tab(
-        text: "请求",
+        text: "Request",
       ),
       Tab(
-        text: "响应",
+        text: "Response",
       ),
     ]);
   }
@@ -112,7 +111,7 @@ class _PacketDetailPageState extends State<PacketDetailPage> with SingleTickerPr
     ]);
   }
 
-  /// 从列表中获取第一个类型是 request 的
+  /// Get the first one of type request from the list
   NatSessionRequest? _retrieveRequest() {
     if (_sessionRequests == null) {
       return null;
@@ -125,7 +124,7 @@ class _PacketDetailPageState extends State<PacketDetailPage> with SingleTickerPr
     return null;
   }
 
-  /// 从列表中获取第一个类型是 response 的
+  /// Get the first response from the list
   NatSessionRequest? _retrieveResponse() {
     if (_sessionRequests == null) {
       return null;
@@ -149,10 +148,10 @@ class _PacketDetailPageState extends State<PacketDetailPage> with SingleTickerPr
     try {
       // bool result = await NatSessionDelegate().saveSession(null, null);
       bool result = await NatSessionDelegate().saveSession(NatSession(), "");
-      Fluttertoast.showToast(msg: result ? "成功了" : "失败了");
+      Fluttertoast.showToast(msg: result ? "Success" : "Failure");
     } on PlatformException catch (e) {
-      /// TODO: 错误处理
-      Fluttertoast.showToast(msg: "异常了，${e.message}");
+      /// TODO: Proper error handling apparently
+      Fluttertoast.showToast(msg: "Unexpected error : ${e.message}");
     }
   }
 }

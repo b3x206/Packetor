@@ -29,7 +29,7 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
           child: Icon(Icons.arrow_back),
         ),
         title: Text(
-          "URL 预览",
+          "URL Preview",
           style: TextStyle(fontSize: 18),
         ),
         actions: <Widget>[
@@ -38,7 +38,7 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
             child: InkWell(
               onTap: () {
                 Clipboard.setData(ClipboardData(text: widget.url ?? ""));
-                Fluttertoast.showToast(msg: "已复制至剪贴板！");
+                Fluttertoast.showToast(msg: "Copied to clipboard");
               },
               child: Icon(Icons.content_paste),
             ),
@@ -77,7 +77,7 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
     }
 
     var uri = Uri.parse(widget.url!);
-    if (uri.scheme == null || uri.scheme.isEmpty) {
+    if (uri.scheme.isEmpty) {
       return "UNKNOWN";
     }
     return uri.scheme + "://" + uri.authority + uri.path;
@@ -86,13 +86,13 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
   _buildQueryParameters() {
     if (widget.url == null || widget.url!.isEmpty) {
       return Container(
-        child: _buildStatusItem("parameter", "参数为空"),
+        child: _buildStatusItem("parameter", "Paramter Empty"),
       );
     }
     var queryParameters = Uri.parse(widget.url!).queryParameters;
-    if (queryParameters == null || queryParameters.length == 0) {
+    if (queryParameters.length == 0) {
       return Container(
-        child: _buildStatusItem("parameter", "参数为空"),
+        child: _buildStatusItem("parameter", "Paramter Empty"),
       );
     }
     List<Widget> widgets = <Widget>[];
@@ -155,34 +155,34 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-            title: Text("选择复制对象"),
+            title: Text("Select the copied object"),
             content: ListView(
               shrinkWrap: true,
               children: <Widget>[
                 ListTile(
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: key ?? ""));
-                    Fluttertoast.showToast(msg: "已复制至剪贴板！");
+                    Fluttertoast.showToast(msg: "Copied to clipboard");
                     Navigator.of(context).pop();
                   },
-                  title: Text("复制 key"),
+                  title: Text("Copy key"),
                 ),
                 ListTile(
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: value ?? ""));
-                    Fluttertoast.showToast(msg: "已复制至剪贴板！");
+                    Fluttertoast.showToast(msg: "Copied to clipboard");
                     Navigator.of(context).pop();
                   },
-                  title: Text("复制 value"),
+                  title: Text("Copy value"),
                 ),
                 ListTile(
                   onTap: () {
                     Clipboard.setData(
                         ClipboardData(text: _getKeyAndValue(key, value)));
-                    Fluttertoast.showToast(msg: "已复制至剪贴板！");
+                    Fluttertoast.showToast(msg: "Copied to clipboard");
                     Navigator.of(context).pop();
                   },
-                  title: Text("复制 key & value"),
+                  title: Text("Copy key & value"),
                 ),
               ],
             ),
@@ -207,15 +207,15 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text("复制"),
+                    child: Text("Copy"),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: value));
-                      Fluttertoast.showToast(msg: '已复制至剪贴板！');
+                      Fluttertoast.showToast(msg: 'Copied to clipboard');
                       Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
-                    child: Text("关闭"),
+                    child: Text("Back"),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

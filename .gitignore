@@ -17,6 +17,7 @@
 .idea/
 
 # Visual Studio Code related
+# Why filter the build/launch config though? Isn't it useful? (ok maybe dart works fine but still)
 .vscode/
 
 # Flutter/Dart/Pub related

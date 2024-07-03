@@ -1,4 +1,4 @@
-/// 一个简单的 Http 请求解析工具，一期考虑可用，二期再优化
+/// A simple Http request parsing tool, which is considered available in the first phase and optimized in the second phase
 class HttpRequest {
   final String _request;
   String _method = "";

@@ -86,7 +86,7 @@ class MainActivity : FlutterActivity() {
             when {
                 call.method == "getBatteryLevel" -> {
                     handleGetBatteryLevel(result)
-//                    invokeDart()
+                    // invokeDart()
                 }
                 call.method == "startVPN" -> startVPN(result)
                 call.method == "stopVPN" -> stopVPN(result)
@@ -112,8 +112,8 @@ class MainActivity : FlutterActivity() {
             }
         }
         flutterView.setMessageHandler(PCF_TRANSFER_SESSION) { message, reply ->
-            //            message.order(ByteOrder.nativeOrder())
-            // TODO: 这种方式存在问题，暂时先这么做
+            // message.order(ByteOrder.nativeOrder())
+            // TODO : There are problems with this approach, so let's do this for now.
             session = NatSessionModel.NatSession.parseFrom(message.array())
             reply.reply(null)
         }
@@ -134,7 +134,7 @@ class MainActivity : FlutterActivity() {
 
     private fun performSaveSession(session: NatSessionModel.NatSession, dir: String) {
         var entity = session.toNatSessionEntity(this, dir)
-        // TODO: 直接 insert 的处理有问题！！！
+        // TODO : There is a problem with direct insert processing
         RoomHelper.getNatSessionDatabase().natSessionDao.insert(entity)
     }
 

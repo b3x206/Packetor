@@ -26,12 +26,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("设置"),
+        title: Text("Setup"),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.file_download),
               onPressed: () {
-                Fluttertoast.showToast(msg: "检查更新功能开发中，敬请期待");
+                Fluttertoast.showToast(msg: "Check for updates is TODO.");
               })
         ],
       ),
@@ -46,58 +46,58 @@ class _SettingsPageState extends State<SettingsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: Text(
-              "抓包设置",
+              "Packet Capture Settings",
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             ),
           ),
           ListTile(
             onTap: () {},
             title: Text(
-              "目标应用",
+              "Target Applications",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "全部",
+              "All",
               style: TextStyle(fontSize: 12),
             ),
           ),
           ListTile(
             onTap: () {},
             title: Text(
-              "目标 Host",
+              "Target Host",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "全部",
+              "All",
               style: TextStyle(fontSize: 12),
             ),
           ),
           ListTile(
             onTap: () {},
             title: Text(
-              "SSL 证书管理",
+              "SSL Certificate Management",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "管理用于 SSL 请求的数字证书",
+              "Managing digital certificates for SSL requests",
               style: TextStyle(fontSize: 12),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: Text(
-              "高级选项",
+              "Advanced Options",
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             ),
           ),
           ListTile(
             onTap: () {},
             title: Text(
-              "插件管理",
+              "Plugin Management",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "插件管理器，可以添加、删除、启用和禁用插件",
+              "Plugin manager, which can add, remove, enable and disable plugins",
               style: TextStyle(fontSize: 12),
             ),
           ),
@@ -109,11 +109,11 @@ class _SettingsPageState extends State<SettingsPage> {
             },
             value: _isWindowMode,
             title: Text(
-              "窗口模式",
+              "Windowed Mode",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "抓包过程中如果应用退回到后台，显示一个 mini 悬浮窗",
+              "If the app returns to the background during packet capture, a mini floating window will be displayed",
               style: TextStyle(fontSize: 12),
             ),
           ),
@@ -125,11 +125,11 @@ class _SettingsPageState extends State<SettingsPage> {
             },
             value: _isBlockRequest,
             title: Text(
-              "屏蔽请求",
+              "Block Request",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "如果打开此开关，客户端的 http 请求将不会发给服务器",
+              "If this switch is turned on, the client's http request will not be sent to the server.",
               style: TextStyle(fontSize: 12),
             ),
           ),
@@ -141,29 +141,31 @@ class _SettingsPageState extends State<SettingsPage> {
             },
             value: _isBlockResponse,
             title: Text(
-              "屏蔽响应",
+              "Canned Response",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "如果打开此开关，服务器的 http 响应将不会返给客户端",
+              "If this switch is turned on, the server's http response will not be returned to the client",
               style: TextStyle(fontSize: 12),
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Fluttertoast.showToast(msg: "TODO : DNS Config.");
+            },
             title: Text(
-              "DNS 服务器",
+              "DNS",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "暂未配置",
+              "Not configured yet",
               style: TextStyle(fontSize: 12),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: Text(
-              "其它选项",
+              "Other options",
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             ),
           ),
@@ -175,35 +177,39 @@ class _SettingsPageState extends State<SettingsPage> {
             },
             value: _enablePerformanceMode,
             title: Text(
-              "性能模式",
+              "Performance Mode",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "开启性能模式后，将会降低抓包时手机电量消耗，但代价是无法获取应用信息",
-              style: TextStyle(fontSize: 12),
-            ),
-          ),
-          ListTile(
-            onTap: () {},
-            title: Text(
-              "安装平行空间",
-              style: TextStyle(color: Colors.black, fontSize: 15),
-            ),
-            subtitle: Text(
-              "建议使用平行空间打开目标应用抓取 https 数据包",
+              "After turning on the performance mode, the power consumption of the mobile phone will be reduced when capturing packets, but the cost is that the application information cannot be obtained.",
               style: TextStyle(fontSize: 12),
             ),
           ),
           ListTile(
             onTap: () {
-              Fluttertoast.showToast(msg: "缓存清除成功");
+              Fluttertoast.showToast(msg: "TODO : Redirect user to install Parallel Space");
             },
             title: Text(
-              "清除缓存",
+              "Install Parallel Space",
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
             subtitle: Text(
-              "缓存文件大小 ${_getReadableSize()}",
+              "It is recommended to use Parallel Space to open the target application to capture https data packets",
+              style: TextStyle(fontSize: 12),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              // TODO : Stub
+              Fluttertoast.showToast(msg: "Cache cleared successfully");
+              cacheSize = "0 KB"; // Mr. Google does not want you to know this trick! How to clear cache in 2 easy steps without resorting to J2ME ahh apis!
+            },
+            title: Text(
+              "Clear Cache",
+              style: TextStyle(color: Colors.black, fontSize: 15),
+            ),
+            subtitle: Text(
+              "Cache Size : ${_getReadableCacheSize()}",
               style: TextStyle(fontSize: 12),
             ),
           ),
@@ -212,7 +218,8 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  String _getReadableSize() {
-    return "23.92KB";
+  String cacheSize = "3.25 KB";
+  String _getReadableCacheSize() {
+    return cacheSize;
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +9,7 @@ import 'package:packet_capture_flutter/pages/setting/settings_page.dart';
 import 'package:packet_capture_flutter/session/nat_session_delegate.dart';
 import 'package:packet_capture_flutter/widget/sexy_fab.dart';
 
-/// 首页：请求列表
+/// Home: Request List
 class HomePage extends StatefulWidget {
   final String? title;
 
@@ -87,7 +86,7 @@ class _HomePageState extends State<HomePage> {
             width: 60,
             child: InkWell(
               onTap: () {
-                Fluttertoast.showToast(msg: '「高级搜索功能开发中」');
+                Fluttertoast.showToast(msg: 'TODO : Advanced search functionality.');
               },
               child: Icon(Icons.youtube_searched_for))),
           SizedBox(
@@ -103,21 +102,22 @@ class _HomePageState extends State<HomePage> {
           return _buildSexyFab(index);
         },
       ),
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: _refreshSessions,
-//        tooltip: '抓包',
-//        child: _isPacketMode ? Icon(Icons.link) : Icon(Icons.link_off),
-//      ),
+      // floatingActionButton: FloatingActionButton(
+        // onPressed: _refreshSessions,
+        // tooltip: 'Packet Capture',
+        // child: _isPacketMode ? Icon(Icons.link) : Icon(Icons.link_off),
+      // ),
     );
   }
 
+  /// This drawer displays the top bar.
   Drawer _buildDrawer(BuildContext context) {
     return Drawer(
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text("Scott Wang"),
-            accountEmail: Text("ScottWang1996#qq.com"),
+            accountName: Text("YUzkul"),
+            accountEmail: Text("example@example.com"),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Theme
                 .of(context)
@@ -128,51 +128,51 @@ class _HomePageState extends State<HomePage> {
           ),
           ListTile(
             onTap: () {
-              Fluttertoast.showToast(msg: "收藏功能开发中，敬请期待");
+              Fluttertoast.showToast(msg: "The collection function is TODO");
             },
-            title: Text("收藏"),
+            title: Text("Collect"),
             leading: Icon(Icons.stars),
           ),
           ListTile(
             onTap: () {
-              Fluttertoast.showToast(msg: "历史记录功能开发中，敬请期待");
+              Fluttertoast.showToast(msg: "The history record function is TODO");
             },
-            title: Text("历史记录"),
+            title: Text("History Record"),
             leading: Icon(Icons.history),
           ),
           ListTile(
             onTap: () {
-              Fluttertoast.showToast(msg: "使用手册功能开发中，敬请期待");
+              Fluttertoast.showToast(msg: "The user manual function is TODO");
             },
-            title: Text("使用手册"),
+            title: Text("Manual (User)"),
             leading: Icon(Icons.help_outline),
           ),
+          // ListTile(
+          //   onTap: () {
+          //     Fluttertoast.showToast(msg: "Premium is bad bruh. (also is this application OSS by accident? lol if so)");
+          //   },
+          //   title: Text("Premium"),
+          //   leading: Icon(Icons.attach_money),
+          // ),
+          // ListTile(
+          //   onTap: () {
+          //     Fluttertoast.showToast(msg: "The opening the google play rating is TODO");
+          //   },
+          //   title: Text("Rate"),
+          //   leading: Icon(Icons.star_half),
+          // ),
           ListTile(
             onTap: () {
-              Fluttertoast.showToast(msg: "目前本应用所有功能免费开放，感谢支持！");
+              Fluttertoast.showToast(msg: "The sharing function is TODO");
             },
-            title: Text("高级版本"),
-            leading: Icon(Icons.attach_money),
-          ),
-          ListTile(
-            onTap: () {
-              Fluttertoast.showToast(msg: "评分功能开发中，感谢支持！");
-            },
-            title: Text("去评分"),
-            leading: Icon(Icons.star_half),
-          ),
-          ListTile(
-            onTap: () {
-              Fluttertoast.showToast(msg: "评分功能开发中，感谢支持！");
-            },
-            title: Text("分享"),
+            title: Text("Share"),
             leading: Icon(Icons.share),
           ),
           ListTile(
             onTap: () {
-              Fluttertoast.showToast(msg: "关于页面开发中，感谢支持！");
+              Fluttertoast.showToast(msg: "The about function is TODO");
             },
-            title: Text("关于"),
+            title: Text("About"),
             leading: Icon(Icons.info),
           ),
           ListTile(
@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                   return SettingsPage();
                 }));
             },
-            title: Text("设置"),
+            title: Text("Settings"),
             leading: Icon(Icons.settings),
           ),
         ],

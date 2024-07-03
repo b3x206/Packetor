@@ -31,6 +31,9 @@ class NatSessionDelegate {
       _data = message;
       completer.complete(message);
       bMessages.setMessageHandler(_channel, null);
+      return null;
+
+      // return _data;
     });
 
     NatSessionManager().requestSessions();
@@ -47,6 +50,7 @@ class NatSessionDelegate {
     bMessages.setMessageHandler(_sessionChannel, (ByteData? message) {
       completer.complete(message);
       bMessages.setMessageHandler(_sessionChannel, null);
+      return null;
     });
     NatSessionManager().requestSession(dir);
     return completer.future;

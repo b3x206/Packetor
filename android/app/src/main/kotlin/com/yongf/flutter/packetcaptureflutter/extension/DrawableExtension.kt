@@ -14,7 +14,7 @@ import android.graphics.drawable.NinePatchDrawable
  */
 
 /**
- * Drawable 转 Bitmap
+ * Drawable Bitmap
  */
 fun Drawable.toBitmap(): Bitmap? {
     when (this) {
@@ -27,7 +27,8 @@ fun Drawable.toBitmap(): Bitmap? {
                             if (getOpacity() !== PixelFormat.OPAQUE)
                                 Bitmap.Config.ARGB_8888
                             else
-                                Bitmap.Config.RGB_565)
+                                Bitmap.Config.RGB_565
+                    )
             val canvas = Canvas(bitmap)
             setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight())
             draw(canvas)

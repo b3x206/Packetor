@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// 请求列表过滤器配置页面
+/// Request List Filter Configuration Page
 class FilterConfigPage extends StatefulWidget {
   @override
   _FilterConfigPageState createState() => _FilterConfigPageState();

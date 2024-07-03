@@ -5,7 +5,6 @@ package com.yongf.flutter.packetcaptureflutter.common
  * @since 2019/4/1.
  */
 object Packages {
-
     const val WECHAT = "com.tencent.mm"
     const val QQ = "com.tencent.mobileqq"
     const val WEREAD = "com.tencent.weread"

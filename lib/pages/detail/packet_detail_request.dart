@@ -158,7 +158,7 @@ class _PacketDetailRequestState extends State<PacketDetailRequest> {
   _getTextOption() {
     var text = widget.request?.bodyStr;
     if (text == null || text.isEmpty) {
-      text = "无数据";
+      text = "No Data";
     }
     return Center(
       child: Container(
@@ -169,13 +169,13 @@ class _PacketDetailRequestState extends State<PacketDetailRequest> {
 
   _getHexOption() {
     return Center(
-      child: Text("功能开发中，敬请期待"),
+      child: Text("TODO : Implement getHexOption"),
     );
   }
 
   _getPreviewOption() {
     return Center(
-      child: Text('不支持预览'),
+      child: Text("TODO : Implement getPreviewOption"),
     );
   }
 
@@ -201,15 +201,15 @@ class _PacketDetailRequestState extends State<PacketDetailRequest> {
           ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text("复制"),
+                    child: Text("Copy"),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: value));
-                      Fluttertoast.showToast(msg: '已复制至粘贴板');
+                      Fluttertoast.showToast(msg: 'Copied to clipboard');
                       Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
-                    child: Text("关闭"),
+                    child: Text("Back"),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

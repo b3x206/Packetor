@@ -69,7 +69,7 @@ class _PacketListPageState extends State<PacketListPage> {
                     children: <Widget>[
                       Text(
                         widget.sessions?.session[position].appInfo.appName ??
-                            '未知应用',
+                            'Unknown App',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -162,12 +162,13 @@ class _PacketListPageState extends State<PacketListPage> {
 
   String _getSessionState(NatSession? session) {
     if (session == null) {
-      return '无响应';
+      return 'No Response';
     }
+
     if (session.receivedByteNum > 0) {
       return '200 OK';
     } else {
-      return '无响应';
+      return 'No Response';
     }
   }
 
@@ -228,7 +229,7 @@ class _PacketListPageState extends State<PacketListPage> {
   _gotoPacketDetailPage(int position) {
     NatSession session = widget.sessions!.session[position];
     if (session.type != Constants.TCP) {
-      Fluttertoast.showToast(msg: '暂时只支持查看 TCP 类型请求');
+      Fluttertoast.showToast(msg: 'Only TCP type requests are supported (for now).');
       return;
     }
     String dir = Constants.DATA_DIR +

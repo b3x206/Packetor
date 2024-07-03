@@ -21,30 +21,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 异常管理类
+ * Exception Management
  * <p/>
  * Created by imtianx on 2016-7-10.
  */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
-    /**
-     * 系统默认UncaughtExceptionHandler
-     */
     private Thread.UncaughtExceptionHandler mDefaultHandler;
-
-    /**
-     * context
-     */
     private Context mContext;
 
     /**
-     * 存储异常和参数信息
+     * Store exception and parameter information
      */
     private Map<String, String> paramsMap = new HashMap<>();
 
-    /**
-     * 格式化时间
-     */
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
     private String TAG = "MyCrash";
@@ -56,7 +46,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * 获取CrashHandler实例
+     * Get the CrashHandler instance
      */
     public static synchronized CrashHandler getInstance() {
         if (null == mInstance) {
@@ -68,67 +58,49 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     public void init(Context context) {
         mContext = context.getApplicationContext();
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        //设置该CrashHandler为系统默认的
+
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
-    /**
-     * uncaughtException 回调函数
-     */
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         if (!handleException(ex) && mDefaultHandler != null) {
-            //如果自己没处理交给系统处理
             mDefaultHandler.uncaughtException(thread, ex);
         } else {
-            //自己处理
-            try {//延迟3秒杀进程
+            try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Log.e(TAG, "error : ", e);
             }
-            //退出程序
+
             System.exit(0);
         }
-
     }
 
     /**
-     * 收集错误信息.发送到服务器
+     * Collect error information ~~and send it to the server~~
      *
-     * @return 处理了该异常返回true, 否则false
+     * @return returns true if the exception is not null and was saved
      */
     private boolean handleException(Throwable ex) {
         if (ex == null) {
             return false;
         }
-        //收集设备参数信息
-        collectDeviceInfo(mContext);
-        //添加自定义信息
-        addCustomInfo();
-        //使用Toast来显示异常信息
-        new Thread() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                //在此处处理出现异常的情况
-                Toast.makeText(mContext, "程序开小差了呢..", Toast.LENGTH_SHORT).show();
-                Looper.loop();
-            }
-        }.start();
-        //保存日志文件
+        // collectDeviceInfo(mContext);
+        // addCustomInfo();
+        // new Thread() {
+        //     @Override
+        //     public void run() {
+        //         Looper.prepare();
+        //         Toast.makeText(mContext, "The application is not responding..", Toast.LENGTH_SHORT).show();
+        //         Looper.loop();
+        //     }
+        // }.start();
         saveCrashInfo2File(ex);
         return true;
     }
 
-
-    /**
-     * 收集设备参数信息
-     *
-     * @param ctx
-     */
     public void collectDeviceInfo(Context ctx) {
-        //获取versionName,versionCode
         try {
             PackageManager pm = ctx.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(), PackageManager.GET_ACTIVITIES);
@@ -141,7 +113,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "an error occured when collect package info", e);
         }
-        //获取所有系统信息
         Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields) {
             try {
@@ -153,18 +124,15 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    /**
-     * 添加自定义参数
-     */
     private void addCustomInfo() {
-        Log.i(TAG, "addCustomInfo: 程序出错了...");
+        Log.i(TAG, "addCustomInfo: Application Error...");
     }
 
     /**
-     * 保存错误信息到文件中
+     * Save error information to a file
      *
      * @param ex
-     * @return 返回文件名称, 便于将文件传送到服务器
+     * @return Returns the file name.
      */
     private String saveCrashInfo2File(Throwable ex) {
         StringBuffer sb = new StringBuffer();
@@ -205,10 +173,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 Log.i(TAG, "saveCrashInfo2File: " + sb.toString());
                 fos.close();
             }
+
             return fileName;
         } catch (Exception e) {
-//            Log.e(TAG, "an error occured while writing file...", e);
+            Log.e(TAG, "an error occured while writing file...", e);
         }
+
         return null;
     }
 }

@@ -9,6 +9,7 @@ Function Get-CommandExists {
     $oldPref = $ErrorActionPreference
     $ErrorActionPreference = 'stop'
 
+    # Not efficient, but works.
     try {
         if (Get-Command $cmd) {
             return $true
@@ -44,10 +45,14 @@ Function Main {
     # $protoc_plug_dir = where.exe *protoc-*
     protoc --dart_out="./lib/model" "./android/app/src/main/proto/nat_session.proto"
     if (!$?) {
-        Write-Error "protoc.exe Probably errored out, exiting"
+        Write-Error "protoc.exe errored out, exiting"
         exit 1
     }
     protoc --dart_out="./lib/model" "./android/app/src/main/proto/nat_session_request.proto"
+    if (!$?) {
+        Write-Error "protoc.exe errored out, exiting"
+        exit 1
+    }
 
     Move-Item -Force "./lib/model/android/app/src/main/proto/*.dart" "./lib/model/"
     Remove-Item -Recurse "./lib/model/android"

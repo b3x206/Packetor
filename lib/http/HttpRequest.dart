@@ -1,4 +1,4 @@
-/// 一个简单的 Http 响应解析工具，一期考虑可用，二期再优化
+/// A simple Http response parsing tool, which is considered available in the first phase and optimized in the second phase
 class HttpResponse {
 
 }
