@@ -1,10 +1,14 @@
 # Packetor
-
-Packet Capture Flutter
+Packet Capture Application written in Flutter
 
 ## Building
-### Desktop
-It probably won't even work on desktop, but it does build fine.
+### Desktop / Web
+It won't work on desktop / web as intended, but it does build fine. <br>
+This application is required to be run at mobile platforms, but for checking the layout, this will do. <br>
+Just press F5 and run on desktop / web platform. It will work, sort of, but will be a hollow app without any functions. <br>
+
+### IOS
+I am poor so I do not have an apple device (or the ability to buy anything other than a potato with cables) that can run the recent MacOS. So IOS support is removed.
 
 ### Android
 #### Step 0 :
@@ -22,9 +26,14 @@ If the generated [proto files contained here](./lib/model/) are **erroring out;*
 - - ```dart pub global activate protoc_plugin```
 - After all of these, run the [script contained here for your respective OS, I recommend that you use 'pwsh' regardless because 'bash' script is outdated](./scripts)
 - If the script works, new protobuf library wrappers will be generated (i suppose that's what the script does) and you will have the files checked out. (with git)
-
-#### Step N :
-TODO, yes. Still doesn't build. When figured out, will update.
+#### Step 2 :
+Ensure your `JAVA_HOME` java version matches [what gradle 7.6 wants.](https://docs.gradle.org/8.8-rc-1/userguide/compatibility.html) <br>
+If not, **install the appopriate java version** that the gradle supports with your package manager (or scavenge the interwebs for non-oracle JDK if you are on Michealsoft Bindows), because you can't have enough JDK's on your computer and the poor indie corporation with a widespread operating system, google, can't support the most recent LTS JDK. <br>
+* Billions must install all versions of Java that oracle gatekeeps behind a "we will confiscate your liver if you use it in an enterprise setting" license.
+#### Step 3 :
+Build the android project using **Ctrl+Shift+B** or **remote debug** or if you are lucky enough to have a device that can **run Android Emulator** (either a Mac or Linux device with 129471241 dependencies installed) run it there (and maybe enjoy some grilling on your computer while it tries to work). It should work, after I suffered to fix the './android' directory and it's gradle.
+#### Note : 
+Android building may not work or be broken currently. I will fix the issues.
 
 ## Key Features
 1. Http packet capture
@@ -62,7 +71,7 @@ TODO, yes. Still doesn't build. When figured out, will update.
 12. Chart, refer to Charles
 13. Notes, refer to Charles
 14. Fully refer to Charles' functions, Charles is the all-powerful mobile terminal
-15. Who is Charles? idk really but he seems great. (perhaps a lib)
+15. Who is Charles? idk really but he seems great. (perhaps a lib / terminal emulator)
 16. Implement the request collection function.
 17. Implement the request resend function.
 

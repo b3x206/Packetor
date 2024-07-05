@@ -105,7 +105,19 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:1.1.1"
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // --
+    // ?? : LOOOOOOOOOOOOOOL
+    // https://stackoverflow.com/questions/52590101/could-not-find-method-testimplementation-for-arguments-junitjunit4-12
+    // If your system locale is Turkish or anything that uses 'İ', you need to export these dependencies with that character
+    // This is a Java toUpperCase locale related encoding problem
+    // ... what
+    // --
+    // TODO : Create a powershell script that configures the gradle imports according to the current system locale.
+    // This will mutate files, but can't do much about it. If the 'I' variant works fine in linox will change to that and use the 'İ' variant locally
+    // --
+    // Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+    testİmplementation 'junit:junit:4.12'
+    androidTestİmplementation 'com.android.support.test:runner:1.0.2'
+    androidTestİmplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // Thread.CurrentThread.CurrentCulture = prev;
 }
