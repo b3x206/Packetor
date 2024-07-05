@@ -161,7 +161,7 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
               children: <Widget>[
                 ListTile(
                   onTap: () {
-                    Clipboard.setData(ClipboardData(text: key ?? ""));
+                    Clipboard.setData(ClipboardData(text: key));
                     Fluttertoast.showToast(msg: "Copied to clipboard");
                     Navigator.of(context).pop();
                   },
@@ -169,7 +169,7 @@ class _UrlPreviewPageState extends State<UrlPreviewPage> {
                 ),
                 ListTile(
                   onTap: () {
-                    Clipboard.setData(ClipboardData(text: value ?? ""));
+                    Clipboard.setData(ClipboardData(text: value));
                     Fluttertoast.showToast(msg: "Copied to clipboard");
                     Navigator.of(context).pop();
                   },
