@@ -101,12 +101,12 @@ class _PacketDetailPageState extends State<PacketDetailPage> with SingleTickerPr
         index: widget.index,
         request: _sessionRequests?.request != null ? _sessionRequests?.request[0] : null,
       ),
-      // TODO : Null values will crash this most likely
+
       PacketDetailRequest(
-        request: _retrieveRequest()!,
+        request: _retrieveRequest(),
       ),
       PacketDetailResponse(
-        response: _retrieveResponse()!,
+        response: _retrieveResponse(),
       ),
     ]);
   }

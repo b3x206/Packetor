@@ -114,10 +114,24 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
   }
 
   String _getResponseDataSize() {
+    if (widget.sessions == null) {
+      return "[!!] No sessions";
+    }
+    if (widget.index == null) {
+      return "[!!] No index";
+    }
+
     return widget.sessions!.session[widget.index!].receivedByteNum.toString() + "B";
   }
 
   String _getRequestDataSize() {
+    if (widget.sessions == null) {
+      return "[!!] No sessions";
+    }
+    if (widget.index == null) {
+      return "[!!] No index";
+    }
+
     return widget.sessions!.session[widget.index!].bytesSent.toString() + "B";
   }
 
@@ -130,6 +144,13 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
   }
 
   String _getRequestStartTime() {
+    if (widget.sessions == null) {
+      return "[!!] No sessions";
+    }
+    if (widget.index == null) {
+      return "[!!] No index";
+    }
+
     return DateTime.fromMillisecondsSinceEpoch(widget
                 .sessions!.session[widget.index!].connectionStartTime
                 .toInt())
@@ -137,6 +158,13 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
   }
 
   String _getRemoteIP() {
+    if (widget.sessions == null) {
+      return "[!!] No sessions";
+    }
+    if (widget.index == null) {
+      return "[!!] No index";
+    }
+
     return widget.sessions!.session[widget.index!].remoteIP.toString();
   }
 
@@ -149,6 +177,13 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
   }
 
   String _getRemoteHost() {
+    if (widget.sessions == null) {
+      return "[!!] No sessions";
+    }
+    if (widget.index == null) {
+      return "[!!] No index";
+    }
+
     return widget.sessions!.session[widget.index!].remoteHost;
   }
 
@@ -165,9 +200,16 @@ class _PacketDetailOverviewState extends State<PacketDetailOverview> {
   }
 
   String _getRequestUrl() {
-    var requestUrl = widget.sessions!.session[widget.index!].requestUrl;
-    if (requestUrl.isEmpty) {
-      String? host = widget.sessions?.session[widget.index!].remoteHost;
+    if (widget.sessions == null) {
+      return "[!!] https://no-sessions";
+    }
+    if (widget.index == null) {
+      return "[!!] https://no-index";
+    }
+
+    String? requestUrl = widget.sessions?.session[widget.index ?? 0].requestUrl;
+    if (requestUrl == null || requestUrl.isEmpty) {
+      String? host = widget.sessions?.session[widget.index ?? 0].remoteHost;
       if (host != null && host.isNotEmpty) {
         return host;
       }

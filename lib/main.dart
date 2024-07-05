@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
         Routes.TEST_PAGE: (BuildContext context) => TestPage(),
       },
       home: HomePage(title: 'Packetor'),
-//      home: TestPage(),
-//      home: PacketDetailPage(),
+      // home: PacketDetailPage(), // Works (requires extra data, which is not present currently)
+      // home: TestPage(),         // Works, but why it's 3D? lol
       debugShowCheckedModeBanner: false,
     );
   }

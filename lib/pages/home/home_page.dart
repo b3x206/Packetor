@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,12 +22,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Android / IOS Method Interop
   var _platform = MethodChannel('pcf.flutter.yongf.com/battery');
   var _pcf = MethodChannel('flutter.yongf.com/pcf');
-  String _batteryLevel = 'Unknown battery level.';
+  // Other
+  String _batteryLevelState = 'Unknown battery level.';
   bool _isPacketMode = false;
   String _title = '';
-  NatSessions? _protobuf;
+  NatSessions? _protobuf = NatSessions();
   Timer? _refreshTimer;
   bool _enableAutoRefresh = false;
 
@@ -39,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     setState(() {
-      this._batteryLevel = batteryLevel;
+      this._batteryLevelState = batteryLevel;
     });
   }
 
@@ -53,6 +57,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    // Works
     super.initState();
 
     _isPacketMode = false;
@@ -74,6 +79,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Does not work, but gets called
+    // print("build home");
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(onTap: () {}, child: Icon(Icons.menu)),
@@ -269,6 +276,13 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _changeVpnStatus() async {
     bool expected = !_isPacketMode;
+    // Ah yes, 2 different variables and classes for platform checking.
+    // Very great, because the 'Platform' class crashes web flutter :)
+    if (kIsWeb || (!Platform.isAndroid && !Platform.isIOS)) {
+      debugPrint("[home_page::_changeVpnStatus] Platform-specific call done. Required platform : Android || IOS");
+      return;
+    }
+
     try {
       if (expected) {
         await _platform.invokeMethod('startVPN');
@@ -278,6 +292,7 @@ class _HomePageState extends State<HomePage> {
     } on PlatformException catch (e) {
       debugPrint("PlatformException: ${e.message}");
     }
+
     setState(() {
       this._isPacketMode = expected;
     });
