@@ -10,6 +10,7 @@ import com.minhui.vpn.VPNLog;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 import okio.BufferedSource;
 import okio.GzipSource;
@@ -89,7 +90,7 @@ public class SaveDataFileParser {
                     return showData;
                 } else if (contentType.toLowerCase().contains(URLENCODED)) {
                     String readUtf8 = buffer.readUtf8();
-                    showData.bodyStr = URLDecoder.decode(readUtf8);
+                    showData.bodyStr = URLDecoder.decode(readUtf8, StandardCharsets.UTF_8);
                     return showData;
                 }
 

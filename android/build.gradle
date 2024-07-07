@@ -17,6 +17,12 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    // Can be used to add arguments to the compiled java projects,
+    // since gradle now has started compiling stuff (finally)
+    // tasks.withType(JavaCompile) {
+    //     options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+    // }
 }
 
 rootProject.buildDir = "../build"
