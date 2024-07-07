@@ -35,19 +35,9 @@ android {
     compileSdk = flutter.compileSdkVersion
     // ndkVersion = flutter.ndkVersion // Unused for this app?
 
-    sourceSets {
-        main.java.srcDirs += "src/main/kotlin"
-        main {
-            // Define the proto file directory
-            proto {
-                srcDir "src/main/proto"
-                include "**/*.proto"
-            }
-        }
-    }
-
-    lintOptions {
-        disable "InvalidPackage"
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
@@ -65,6 +55,21 @@ android {
                 arguments = ["room.schemaLocation" : "$projectDir/schemas".toString()]
             }
         }
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin"
+        main {
+            // Define the proto file directory
+            proto {
+                srcDir "src/main/proto"
+                include "**/*.proto"
+            }
+        }
+    }
+
+    lintOptions {
+        disable "InvalidPackage"
     }
 
     buildTypes {
