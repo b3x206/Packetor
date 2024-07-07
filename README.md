@@ -1,6 +1,12 @@
 # Packetor
 Packet Capture Application written in Flutter
 
+## Clone
+Please clone with submodules :
+```bash
+$ git clone 
+```
+
 ## Building
 ### Desktop / Web
 It won't work on desktop / web as intended, but it does build fine. <br>
@@ -16,7 +22,8 @@ Remove your will to live, because that's how android building works. <br>
 Also the ""very good"" android emulator won't work and will segfault if you are unfortunate enough to have a Windows 10 PC with broken tpm, amd ryzen and 7238457239578932 gazillions of SDK's installed to your device. Because apparently virtualization is hard and [so are build systems. <sup>just replace the microservices with another process/call to an external library that does 732935 things and exits silently with segfault and the title is "Gradle/Android Emulator"</sup>](https://www.reddit.com/r/ProgrammerHumor/comments/72fwhc/modern_application_architecture/)
 #### Step 1 :
 If the generated [proto files contained here](./lib/model/) are **erroring out;** <br>
-**[!!]** Again, *you should* **ONLY DO THIS IF THE PROTO FILES ARE ERRORING OUT :**
+> [!WARNING]
+> **[!!]** Again, *you should* **ONLY DO THIS IF THE PROTO FILES ARE ERRORING OUT :**
 - Ensure that `protobuf` is installed on your system, if not, install using your package manager.
 - Windows :
 - - ```(scoop bucket add extras) -and (scoop install protobuf)```

@@ -1,0 +1,3 @@
+[submodule "android/NetWorkPacketCapture-Plugin"]
+	path = android/NetWorkPacketCapture-Plugin
+	url = https://github.com/huolizhuminh/NetWorkPacketCapture

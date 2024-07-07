@@ -1,84 +1,94 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.protobuf" version "0.9.4"
+}
+// --
+// apply plugin: "com.android.application"
+// apply plugin: "kotlin-android"
+// apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+// apply plugin: "com.google.protobuf"
+
 def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
+def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
+    localPropertiesFile.withReader("UTF-8") { reader ->
         localProperties.load(reader)
     }
 }
 
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new Exception("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = "1"
 }
 
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = "1.0"
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply plugin: 'com.google.protobuf'
-
+// com.android.application + kotlin-android
 android {
-    compileSdkVersion 28
+    namespace = "com.yongf.flutter.packetcaptureflutter"
+    compileSdk = flutter.compileSdkVersion
+    // ndkVersion = flutter.ndkVersion // Unused for this app?
 
     sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += "src/main/kotlin"
         main {
             // Define the proto file directory
             proto {
-                srcDir 'src/main/proto'
-                include '**/*.proto'
+                srcDir "src/main/proto"
+                include "**/*.proto"
             }
         }
     }
 
     lintOptions {
-        disable 'InvalidPackage'
+        disable "InvalidPackage"
     }
 
     defaultConfig {
-        applicationId "com.yongf.flutter.packetcaptureflutter"
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 28
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId = "com.yongf.flutter.packetcaptureflutter"
+        minSdkVersion = flutter.minSdkVersion
+        // targetSdkVersion = 28
+        targetSdkVersion = flutter.targetSdkVersion
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
 
+        // idk what this does, could be from older gradle.
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation":
-                                     "$projectDir/schemas".toString()]
+                arguments = ["room.schemaLocation" : "$projectDir/schemas".toString()]
             }
         }
     }
 
     buildTypes {
         release {
+            // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig = signingConfigs.debug
         }
     }
 }
 
+// dev.flutter.flutter-gradle-plugin
 flutter {
-    source '../..'
+    source = "../.."
 }
 
+// com.google.profobuf
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.0.0'
+        artifact = "com.google.protobuf:protoc:3.0.0"
     }
     plugins {
         javalite {
-            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
         }
     }
     generateProtoTasks {
@@ -91,14 +101,15 @@ protobuf {
 }
 
 dependencies {
-    implementation project(':pcf-core')
+    implementation project(":pcf-core")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation group: 'com.android.support', name: 'appcompat-v7', version: '28.0.0'
+    // Removed in new gradle
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation group: "com.android.support", name: "appcompat-v7", version: "28.0.0"
     implementation "com.google.protobuf:protobuf-lite:3.0.1"
-    // implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.7.0'
-    implementation ('com.squareup.retrofit2:converter-protobuf:2.5.0') {
-        exclude group: 'com.google.protobuf', module: 'protobuf-java'
+    // implementation group: "com.google.protobuf", name: "protobuf-java", version: "3.7.0"
+    implementation ("com.squareup.retrofit2:converter-protobuf:2.5.0") {
+        exclude group: "com.google.protobuf", module: "protobuf-java"
     }
 
     // Room
@@ -108,16 +119,16 @@ dependencies {
     // --
     // ?? : LOOOOOOOOOOOOOOL
     // https://stackoverflow.com/questions/52590101/could-not-find-method-testimplementation-for-arguments-junitjunit4-12
-    // If your system locale is Turkish or anything that uses 'İ', you need to export these dependencies with that character
+    // If your system locale is Turkish or anything that uses "İ", you need to export these dependencies with that character
     // This is a Java toUpperCase locale related encoding problem
     // ... what
     // --
     // TODO : Create a powershell script that configures the gradle imports according to the current system locale.
-    // This will mutate files, but can't do much about it. If the 'I' variant works fine in linox will change to that and use the 'İ' variant locally
+    // This will mutate files, but can"t do much about it. If the "I" variant works fine in linox will change to that and use the "İ' variant locally
     // --
     // Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-    testİmplementation 'junit:junit:4.12'
-    androidTestİmplementation 'com.android.support.test:runner:1.0.2'
-    androidTestİmplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testİmplementation "junit:junit:4.12"
+    androidTestİmplementation "com.android.support.test:runner:1.0.2"
+    androidTestİmplementation "com.android.support.test.espresso:espresso-core:3.0.2"
     // Thread.CurrentThread.CurrentCulture = prev;
 }
