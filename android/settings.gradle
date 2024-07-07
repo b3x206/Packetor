@@ -28,7 +28,8 @@ plugins {
 include ":app"
 
 // This is actually a plugin (a project used as plugin), which was made by, unsuprisingly, the chinese.
-// Great, it's not included and be expected.
+// --
 // Note : If the submodule is broken than it may not work, which we have to figure.
+// Yes, the submodule is so old that it's broken. Always wanted to fix deprecated android API's and libraries anyways. Thankfully the dependencies are minimal.
 include ":pcf-core"
-project(":pcf-core").projectDir = new File(settingsDir, "../Android/NetWorkPacketCapture-Plugin/vpnadaptercore")
+project(":pcf-core").projectDir = new File(settingsDir, "./PacketCapturePlugin/vpnadaptercore")

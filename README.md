@@ -2,9 +2,9 @@
 Packet Capture Application written in Flutter
 
 ## Clone
-Please clone with submodules :
+Can be cloned in a straight forward way. This may change if 
 ```bash
-$ git clone 
+$ git clone <repo_link>
 ```
 
 ## Building
@@ -14,7 +14,7 @@ This application is required to be run at mobile platforms, but for checking the
 Just press F5 and run on desktop / web platform. It will work, sort of, but will be a hollow app without any functions. <br>
 
 ### IOS
-I am poor so I do not have an apple device (or the ability to buy anything other than a potato with cables) that can run the recent MacOS. So IOS support is removed.
+I am poor so I do not have an apple device (or the ability to buy anything other than a potato with cables) that can run the recent MacOS. So IOS support is removed. (+ it wasn't even supported properly to begin with)
 
 ### Android
 #### Step 0 :
