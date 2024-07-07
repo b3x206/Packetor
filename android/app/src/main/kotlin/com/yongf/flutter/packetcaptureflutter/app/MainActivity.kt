@@ -6,7 +6,8 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.*
-import android.support.v4.app.ActivityCompat
+// import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
 import android.util.Log
 import android.widget.Toast
 import com.minhui.vpn.ProxyConfig
@@ -73,7 +74,8 @@ class MainActivity : FlutterActivity() {
 
         SdkInitHelper.init(application)
 
-        GeneratedPluginRegistrant.registerWith(this)
+        // https://stackoverflow.com/a/62743317 flutter very gud, specially if you want to make app 'onCreate' handler
+        GeneratedPluginRegistrant.registerWith(new FlutterEngine(this))
 
         handler = Handler()
         ProxyConfig.Instance.registerVpnStatusListener(listener)
@@ -112,10 +114,15 @@ class MainActivity : FlutterActivity() {
             }
         }
         flutterView.setMessageHandler(PCF_TRANSFER_SESSION) { message, reply ->
+            if (message == null) {
+                reply?.reply(null)
+                return
+            }
+
             // message.order(ByteOrder.nativeOrder())
             // TODO : There are problems with this approach, so let's do this for now.
-            session = NatSessionModel.NatSession.parseFrom(message.array())
-            reply.reply(null)
+            session = NatSessionModel.NatSession.parseFrom(message!!.array())
+            reply?.reply(null)
         }
 
         getData()

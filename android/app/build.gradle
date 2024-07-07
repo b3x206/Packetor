@@ -117,9 +117,11 @@ dependencies {
         exclude group: "com.google.protobuf", module: "protobuf-java"
     }
 
-    // Room
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    // Room (these also require androidx migration)
+    // implementation "android.arch.persistence.room:runtime:1.1.1"
+    // annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    implementation "androidx.room:room-runtime:2.4.0"
+    annotationProcessor "androidx.room:room-compiler:2.4.0"
 
     // --
     // ?? : LOOOOOOOOOOOOOOL
