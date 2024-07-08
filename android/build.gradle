@@ -21,7 +21,7 @@ allprojects {
     // Can be used to add arguments to the compiled java projects,
     // since gradle now has started compiling stuff (finally)
     // tasks.withType(JavaCompile) {
-    //     options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+    //     options.compilerArgs << "-Xextended-compiler-checks"
     // }
 }
 

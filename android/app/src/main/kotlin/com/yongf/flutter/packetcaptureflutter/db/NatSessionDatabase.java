@@ -9,6 +9,5 @@ import android.arch.persistence.room.RoomDatabase;
  */
 @Database(entities = {NatSessionEntity.class}, version = 1)
 public abstract class NatSessionDatabase extends RoomDatabase {
-
     public abstract NatSessionDao getNatSessionDao();
 }
