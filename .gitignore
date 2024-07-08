@@ -38,6 +38,11 @@ build/
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+**/android/PacketCapturePlugin/.gradle
+**/android/PacketCapturePlugin/.idea
+**/android/PacketCapturePlugin/gradlew
+**/android/PacketCapturePlugin/gradlew.bat
+**/android/PacketCapturePlugin/local.properties
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
