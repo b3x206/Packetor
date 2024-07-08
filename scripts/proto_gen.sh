@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # note: you should execute this shell script under root project directory.
 
+if [ ! -d "" ]; then
+    echo "Please run this script from the project root."
+    exit 1 
+fi
+
 if [ ! command -v "protoc" &> /dev/null ] then
     echo "Please install protobuf using your package manager."
     exit 1

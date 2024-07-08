@@ -29,6 +29,38 @@ if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
 
+// A protobuf version that should exists both with protoc + protoc-gen-lite (compile) and protobuf-javalite
+def protocVer = "3.16.3"
+
+// com.google.profobuf
+// [i] https://github.com/google/protobuf-gradle-plugin/blob/master/examples/exampleProject/build.gradle
+protobuf {
+    // Note : This should just do protoc --(java|kotlin)_out="./android/app/src/main/java/idk/where/really" "./android/app/src/main/proto/nat_session.proto"
+    protoc {
+        // artifact = "com.google.protobuf:protoc:3.0.0"
+        artifact = "com.google.protobuf:protoc:$protocVer"
+    }
+    plugins {
+        javalite {
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+        }
+    }
+    // [!!] 'ofSourceSet("main")' ignores OS.android
+    generateProtoTasks {
+        all().each { task ->
+            // idk which one works
+            task.builtins {
+                java {
+                    option "lite"
+                }
+            }
+            task.plugins {
+                javalite { }
+            }
+        }
+    }
+}
+
 // com.android.application + kotlin-android
 android {
     namespace = "com.yongf.flutter.packetcaptureflutter"
@@ -86,34 +118,17 @@ flutter {
     source = "../.."
 }
 
-// com.google.profobuf
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.0.0"
-    }
-    plugins {
-        javalite {
-            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-        }
-    }
-    generateProtoTasks {
-        all().each { task ->
-            task.plugins {
-                javalite {}
-            }
-        }
-    }
-}
-
 dependencies {
     implementation project(":pcf-core")
 
-    // Removed in new gradle
-    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation group: "com.android.support", name: "appcompat-v7", version: "28.0.0"
-    implementation "com.google.protobuf:protobuf-lite:3.0.1"
-    // implementation group: "com.google.protobuf", name: "protobuf-java", version: "3.7.0"
-    implementation ("com.squareup.retrofit2:converter-protobuf:2.5.0") {
+   
+    // 2 packages of protobuf exists : the protobuf-java and protobuf-javalite (and the other kotlin/whatever versions)
+    // (the protobuf-lite is the very deprecated package)
+    // implementation "com.google.protobuf:protobuf-lite:3.0.1"
+    implementation "com.google.protobuf:protobuf-javalite:$protocVer"
+    // implementation ("com.squareup.retrofit2:converter-protobuf:2.5.0") {
+    implementation ("com.squareup.retrofit2:converter-protobuf:2.11.0") {
         exclude group: "com.google.protobuf", module: "protobuf-java"
     }
 
@@ -124,18 +139,9 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.4.0"
 
     // --
-    // ?? : LOOOOOOOOOOOOOOL
     // https://stackoverflow.com/questions/52590101/could-not-find-method-testimplementation-for-arguments-junitjunit4-12
-    // If your system locale is Turkish or anything that uses "İ", you need to export these dependencies with that character
-    // This is a Java toUpperCase locale related encoding problem
-    // ... what
-    // --
-    // TODO : Create a powershell script that configures the gradle imports according to the current system locale.
-    // This will mutate files, but can"t do much about it. If the "I" variant works fine in linox will change to that and use the "İ' variant locally
-    // --
-    // Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-    testİmplementation "junit:junit:4.12"
-    androidTestİmplementation "com.android.support.test:runner:1.0.2"
-    androidTestİmplementation "com.android.support.test.espresso:espresso-core:3.0.2"
-    // Thread.CurrentThread.CurrentCulture = prev;
+    // Newer kotlin fixes this.
+    testImplementation "junit:junit:4.12"
+    androidTestImplementation "com.android.support.test:runner:1.0.2"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
 }

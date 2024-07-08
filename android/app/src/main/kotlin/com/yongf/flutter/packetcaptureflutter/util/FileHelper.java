@@ -7,7 +7,6 @@ import java.io.File;
  * @since 2019/1/4.
  */
 public class FileHelper {
-
     public static void mkdirs(String path) {
         File file = new File(path);
         File parent = file.getParentFile();

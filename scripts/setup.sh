@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-echo "setup success!"
+echo "TODO : Setup not implemented. Should generate protobuf?"

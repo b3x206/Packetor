@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.NinePatchDrawable
 
-
 /**
  * @author wangyong.1996@bytedance.com
  * @since 2019/3/30.
@@ -24,7 +23,8 @@ fun Drawable.toBitmap(): Bitmap? {
                     .createBitmap(
                             getIntrinsicWidth(),
                             getIntrinsicHeight(),
-                            if (getOpacity() !== PixelFormat.OPAQUE)
+                            // use format with transparency if bitmap does have transparency
+                            if (!opacity.equals(PixelFormat.OPAQUE))
                                 Bitmap.Config.ARGB_8888
                             else
                                 Bitmap.Config.RGB_565

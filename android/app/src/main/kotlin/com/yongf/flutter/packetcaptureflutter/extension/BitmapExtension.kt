@@ -17,5 +17,5 @@ fun Bitmap?.toProtoByteString(): ByteString {
     val bytes = bos.toByteArray()
     bos.close()
     return ByteString.copyFrom(bytes)
-//    return ByteString.EMPTY
+    // return ByteString.EMPTY
 }
