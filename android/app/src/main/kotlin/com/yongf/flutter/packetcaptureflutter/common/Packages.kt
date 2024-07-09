@@ -1,6 +1,10 @@
 package com.yongf.flutter.packetcaptureflutter.common
 
 /**
+ * List of fake package names for android.
+ * 
+ * Won't be used by me.
+ * 
  * @author wangyong.1996@bytedance.com
  * @since 2019/4/1.
  */

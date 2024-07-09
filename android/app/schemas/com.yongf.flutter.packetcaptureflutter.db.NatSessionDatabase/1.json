@@ -1,0 +1,172 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "b0cb74d3cfe274837d16ca8d4a40ebf7",
+    "entities": [
+      {
+        "tableName": "tb_nat_session",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `type` TEXT, `ipAndPort` TEXT, `remoteIP` INTEGER NOT NULL, `remotePort` INTEGER NOT NULL, `remoteHost` TEXT, `localIP` INTEGER NOT NULL, `localPort` INTEGER NOT NULL, `bytesSent` INTEGER NOT NULL, `packetSent` INTEGER NOT NULL, `receivedByteNum` INTEGER NOT NULL, `receivedPacketNum` INTEGER NOT NULL, `lastRefreshTime` INTEGER NOT NULL, `isHttpsSession` INTEGER NOT NULL, `requestUrl` TEXT, `path` TEXT, `method` TEXT, `connectionStartTime` INTEGER NOT NULL, `vpnStartTime` INTEGER NOT NULL, `isHttp` INTEGER NOT NULL, `uniqueName` TEXT, `appName` TEXT, `packageName` TEXT, `sessionDataLocalAbsPath` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ipAndPort",
+            "columnName": "ipAndPort",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "remoteIP",
+            "columnName": "remoteIP",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remotePort",
+            "columnName": "remotePort",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remoteHost",
+            "columnName": "remoteHost",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "localIP",
+            "columnName": "localIP",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localPort",
+            "columnName": "localPort",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bytesSent",
+            "columnName": "bytesSent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packetSent",
+            "columnName": "packetSent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receivedByteNum",
+            "columnName": "receivedByteNum",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receivedPacketNum",
+            "columnName": "receivedPacketNum",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastRefreshTime",
+            "columnName": "lastRefreshTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isHttpsSession",
+            "columnName": "isHttpsSession",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "requestUrl",
+            "columnName": "requestUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "path",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "method",
+            "columnName": "method",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "connectionStartTime",
+            "columnName": "connectionStartTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vpnStartTime",
+            "columnName": "vpnStartTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isHttp",
+            "columnName": "isHttp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uniqueName",
+            "columnName": "uniqueName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "appName",
+            "columnName": "appName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sessionDataLocalAbsPath",
+            "columnName": "sessionDataLocalAbsPath",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b0cb74d3cfe274837d16ca8d4a40ebf7')"
+    ]
+  }
+}

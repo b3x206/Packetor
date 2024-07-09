@@ -29,6 +29,10 @@ if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
 
+// A protobuf version that should exists both with protoc + protoc-gen-lite (compile) and protobuf-javalite
+def protocVer = "3.19.6"
+// def protocGenerateFilesDir = "$projectDir/src/main/java/protobuf_gen"
+
 // com.android.application + kotlin-android
 android {
     namespace = "com.yongf.flutter.packetcaptureflutter"
@@ -60,7 +64,7 @@ android {
     sourceSets {
         main {
             java {
-                srcDirs "src/main/java", "src/main/kotlin"
+                srcDirs "src/main/java", "src/main/kotlin", "$buildDir/generated/source/proto/"
             }
             proto {
                 srcDir "src/main/proto"
@@ -82,15 +86,13 @@ android {
     }
 }
 
-// A protobuf version that should exists both with protoc + protoc-gen-lite (compile) and protobuf-javalite
-def protocVer = "3.16.3"
-
 // com.google.profobuf
 // [i] https://github.com/google/protobuf-gradle-plugin/blob/master/examples/exampleProject/build.gradle
 protobuf {
-    // Note : This should just do protoc --(java|kotlin)_out="./android/app/src/main/java/idk/where/really" "./android/app/src/main/proto/nat_session.proto"
+    // This is apparently where you add this : https://stackoverflow.com/a/52685219
+    // generatedFilesBaseDir = protocGenerateFilesDir
+
     protoc {
-        // artifact = "com.google.protobuf:protoc:3.0.0"
         artifact = "com.google.protobuf:protoc:$protocVer"
     }
     plugins {
@@ -98,19 +100,10 @@ protobuf {
             artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
         }
     }
-    // [!!] 'ofSourceSet("main")' ignores OS.android
-    // generateProtoTasks.generatedFilesBaseDir = "src" // [!!] This actually makes it output to somewhere, where IS THE DEFAULT?
-    generateProtoTasks {
-        // generatedFilesBaseDir = "src"
 
+    generateProtoTasks {
+        // [!!] 'ofSourceSet("main")' ignores OS.android
         all().each { task ->
-            println "Doing proto for ${task}"
-            // idk which one works, one is probably groovy and the other is kotlin dsl
-            // task.builtins {
-            //     java {
-            //         option "lite"
-            //     }
-            // }
             task.plugins {
                 javalite { }
             }
@@ -132,6 +125,7 @@ dependencies {
     // (the protobuf-lite is the very deprecated package)
     // implementation "com.google.protobuf:protobuf-lite:3.0.1"
     implementation "com.google.protobuf:protobuf-javalite:$protocVer"
+    implementation "com.google.protobuf:protobuf-kotlin-lite:$protocVer"
     // implementation ("com.squareup.retrofit2:converter-protobuf:2.5.0") {
     implementation ("com.squareup.retrofit2:converter-protobuf:2.11.0") {
         exclude group: "com.google.protobuf", module: "protobuf-java"
@@ -142,6 +136,7 @@ dependencies {
     // annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     implementation "androidx.room:room-runtime:2.4.0"
     annotationProcessor "androidx.room:room-compiler:2.4.0"
+    implementation "androidx.sqlite:sqlite:2.1.0"
 
     // --
     // https://stackoverflow.com/questions/52590101/could-not-find-method-testimplementation-for-arguments-junitjunit4-12
@@ -150,3 +145,8 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:1.0.2"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
 }
+
+// Has to be appended :/. for the time being, clear it yourself.
+// tasks.register("clean", Delete) {
+//     delete protocGenerateFilesDir
+// }

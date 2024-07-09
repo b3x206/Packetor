@@ -1,6 +1,6 @@
 package com.minhui.vpn.nat;
 
-
+import android.util.Log;
 import com.minhui.vpn.processparse.AppInfo;
 import com.minhui.vpn.utils.CommonMethods;
 
@@ -10,13 +10,16 @@ import java.io.Serializable;
  * Created by zengzheying on 15/12/29.
  */
 public class NatSession implements Serializable {
+    private static final String TAG = "NatSession";
     public static final String TCP = "TCP";
     public static final String UDP = "UPD";
+
     public String type;
     public String ipAndPort;
     public int remoteIP;
     public short remotePort;
     public String remoteHost;
+    public int localIP;
     public short localPort;
     public int bytesSent;
     public int packetSent;
@@ -31,7 +34,6 @@ public class NatSession implements Serializable {
     public long connectionStartTime = System.currentTimeMillis();
     public long vpnStartTime;
     public boolean isHttp;
-
 
     @Override
     public String toString() {
@@ -59,6 +61,34 @@ public class NatSession implements Serializable {
 
     public String getIpAndPort() {
         return ipAndPort;
+    }
+
+    /**
+     * [Implemented by me] : returns the connecting local ip of the device.
+     * 
+     * TODO : Test whether 'ipAndPort' returns correct value.
+     */
+    public int getLocalIP() {
+        int portSepIndex = ipAndPort.indexOf(":");
+        String bareLocalIp = portSepIndex < 0 ? ipAndPort : ipAndPort.substring(0, portSepIndex);
+        String[] localIpSegments = bareLocalIp.split(".");
+        
+        int result = 0;
+        if (localIpSegments.length == 4) {
+            for (int i = 0; i < localIpSegments.length; i++) {
+                int segment = Integer.parseInt(localIpSegments[i]);
+                if (segment > 255) {
+                    Log.e(TAG, "Invalid ip : " + bareLocalIp);
+                    break;
+                }
+
+                result |= segment << (i * 8);
+            }
+        } else {
+            Log.e(TAG, "Invalid ip : " + bareLocalIp);
+        }
+
+        return result;
     }
 
     public int getRemoteIP() {
@@ -93,7 +123,7 @@ public class NatSession implements Serializable {
         return receivePacketNum;
     }
 
-    public long getRefreshTime() {
+    public long getLastRefreshTime() {
         return lastRefreshTime;
     }
 
@@ -126,7 +156,6 @@ public class NatSession implements Serializable {
     }
 
     public static class NatSesionComparator implements java.util.Comparator<NatSession> {
-
         @Override
         public int compare(NatSession o1, NatSession o2) {
             if (o1 == o2) {

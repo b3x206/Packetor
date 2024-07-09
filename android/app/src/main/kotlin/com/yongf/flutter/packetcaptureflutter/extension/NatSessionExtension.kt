@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream
  * @author wangyong.1996@bytedance.com
  * @since 2019/3/30.
  */
-fun NatSessionModel.NatSession?.toNatSessionEntity(activity: Activity, dir: String?): NatSessionEntity {
+fun NatSessionModel.NatSession?.toNatSessionEntity(_activity: Activity, dir: String?): NatSessionEntity {
     if (dir.isNullOrEmpty() || this == null) {
         return NatSessionEntity()
     }
@@ -58,16 +58,17 @@ fun NatSession.toProtoModel(activity: Activity): NatSessionModel.NatSession {
             .setLocalPort(natSession.getLocalPort().toInt())
             .setBytesSent(natSession.getBytesSent())
             .setPacketSent(natSession.getPacketSent())
-            .setReceivedByteNum(natSession.getReceivedByteNum())
-            .setReceivedPacketNum(natSession.getReceivedPacketNum())
+            .setReceivedByteNum(natSession.getReceiveByteNum())
+            .setReceivedPacketNum(natSession.getReceivePacketNum())
             .setLastRefreshTime(natSession.getLastRefreshTime())
             .setIsHttpsSession(natSession.isHttpsSession())
             .setRequestUrl(natSession.getRequestUrl() ?: "")
-            .setPath(natSession.getPath() ?: "")
+            .setPath(natSession.getPathUrl() ?: "")
             .setMethod(natSession.getMethod() ?: "")
             .setConnectionStartTime(natSession.getConnectionStartTime())
             .setVpnStartTime(natSession.getVpnStartTime())
-            .setIsHttp(natSession.isHttp())
+            // .setIsHttp(natSession.isHttp())
+            .setIsHttp(natSession.isHttp)
             .setUniqueName(natSession.uniqueName)
             .setAppInfo(NatSessionModel.AppInfo.newBuilder()
                     .setAppName(getAppName(activity, natSession.getAppInfo()))
@@ -93,7 +94,7 @@ private fun getAppPackageName(activity: Activity, appInfo: AppInfo?): String {
 }
 
 private fun getAppIcon(activity: Activity, appInfo: AppInfo?): com.google.protobuf.ByteString {
-//    var packageName = randomPkgName(activity)
+    // var packageName = randomPkgName(activity)
     var packageName = getAppPackageName(activity, appInfo)
     val icon = activity.packageManager.getPackageInfo(packageName, 0)
             .applicationInfo.loadIcon(activity.packageManager)
@@ -107,13 +108,15 @@ private fun getAppIcon(activity: Activity, appInfo: AppInfo?): com.google.protob
 }
 
 private fun randomPkgName(activity: Activity): String? {
-    return when ((0..6).random()) {
-        0 -> activity.packageName
-        1 -> Packages.WECHAT
-        2 -> Packages.QQ
-        3 -> Packages.WEREAD
-        4 -> Packages.QQ_MUSIC
-        5 -> Packages.CLOUD_MUSIC
-        else -> Packages.MOBIKE
-    }
+    // chosen by a fair dice roll
+    return activity.packageName;
+    // return when ((0..6).random()) {
+    //     0 -> activity.packageName,
+    //     1 -> "com.package.lol",
+    //     2 -> "com.notarealpackage.FallXtra",
+    //     3 -> "com.random.yes",
+    //     4 -> "com.asdasd.fghfgh",
+    //     5 -> "com.xiaomi.bloatware",
+    //     else -> "com.kotlin.idk"
+    // }
 }

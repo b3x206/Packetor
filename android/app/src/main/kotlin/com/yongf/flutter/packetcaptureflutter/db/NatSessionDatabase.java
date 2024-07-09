@@ -1,7 +1,7 @@
 package com.yongf.flutter.packetcaptureflutter.db;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 /**
  * @author wangyong.1996@bytedance.com
