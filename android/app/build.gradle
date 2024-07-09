@@ -29,38 +29,6 @@ if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
 
-// A protobuf version that should exists both with protoc + protoc-gen-lite (compile) and protobuf-javalite
-def protocVer = "3.16.3"
-
-// com.google.profobuf
-// [i] https://github.com/google/protobuf-gradle-plugin/blob/master/examples/exampleProject/build.gradle
-protobuf {
-    // Note : This should just do protoc --(java|kotlin)_out="./android/app/src/main/java/idk/where/really" "./android/app/src/main/proto/nat_session.proto"
-    protoc {
-        // artifact = "com.google.protobuf:protoc:3.0.0"
-        artifact = "com.google.protobuf:protoc:$protocVer"
-    }
-    plugins {
-        javalite {
-            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-        }
-    }
-    // [!!] 'ofSourceSet("main")' ignores OS.android
-    generateProtoTasks {
-        all().each { task ->
-            // idk which one works
-            task.builtins {
-                java {
-                    option "lite"
-                }
-            }
-            task.plugins {
-                javalite { }
-            }
-        }
-    }
-}
-
 // com.android.application + kotlin-android
 android {
     namespace = "com.yongf.flutter.packetcaptureflutter"
@@ -90,12 +58,13 @@ android {
     }
 
     sourceSets {
-        main.java.srcDirs += "src/main/kotlin"
         main {
-            // Define the proto file directory
+            java {
+                srcDirs "src/main/java", "src/main/kotlin"
+            }
             proto {
                 srcDir "src/main/proto"
-                include "**/*.proto"
+                // include "**.proto"
             }
         }
     }
@@ -109,6 +78,42 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+// A protobuf version that should exists both with protoc + protoc-gen-lite (compile) and protobuf-javalite
+def protocVer = "3.16.3"
+
+// com.google.profobuf
+// [i] https://github.com/google/protobuf-gradle-plugin/blob/master/examples/exampleProject/build.gradle
+protobuf {
+    // Note : This should just do protoc --(java|kotlin)_out="./android/app/src/main/java/idk/where/really" "./android/app/src/main/proto/nat_session.proto"
+    protoc {
+        // artifact = "com.google.protobuf:protoc:3.0.0"
+        artifact = "com.google.protobuf:protoc:$protocVer"
+    }
+    plugins {
+        javalite {
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+        }
+    }
+    // [!!] 'ofSourceSet("main")' ignores OS.android
+    // generateProtoTasks.generatedFilesBaseDir = "src" // [!!] This actually makes it output to somewhere, where IS THE DEFAULT?
+    generateProtoTasks {
+        // generatedFilesBaseDir = "src"
+
+        all().each { task ->
+            println "Doing proto for ${task}"
+            // idk which one works, one is probably groovy and the other is kotlin dsl
+            // task.builtins {
+            //     java {
+            //         option "lite"
+            //     }
+            // }
+            task.plugins {
+                javalite { }
+            }
         }
     }
 }

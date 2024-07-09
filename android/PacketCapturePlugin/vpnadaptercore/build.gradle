@@ -3,7 +3,7 @@ apply plugin: "com.android.library"
 
 android {
     // I mean, what's the worst that could happen hehe
-    // Just change sdk version, that's how to upgrade to new gradle in 2 seconds.
+    // Just change sdk version, that's how to upgrade to new gradle + android in 2 seconds lol
     compileSdkVersion 33
 
     defaultConfig {
@@ -28,8 +28,7 @@ dependencies {
     implementation "com.squareup.okio:okio:1.14.0"
     implementation "androidx.annotation:annotation:1.5.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
-    
-    // TODO : Same turkish locale problem could be here too.
+
     testImplementation "junit:junit:4.12"
     androidTestImplementation "androidx.test:runner:1.5.2"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
