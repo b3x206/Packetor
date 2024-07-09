@@ -1,10 +1,15 @@
+plugins {
+    // lombok only works in build.gradle, otherwise throws a cryptic casting error
+    id 'io.franzbecker.gradle-lombok' version '5.0.0'
+}
+
 // kotlin ver is declared in : ./settings.gradle
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
-
+    
     // Can be used to add arguments to the compiled java projects,
     // since gradle now has started compiling stuff (finally)
     // tasks.withType(JavaCompile) {

@@ -4,13 +4,21 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 /**
  * @author wangyong.1996@bytedance.com
  * @since 2019-04-21.
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(tableName = "tb_nat_session")
 public class NatSessionEntity {
-
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String type;

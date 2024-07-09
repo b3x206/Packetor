@@ -34,7 +34,8 @@ If not, **install the appopriate java version** that the gradle supports with yo
 * Billions must install all versions of Java that oracle gatekeeps behind a "we will confiscate your liver if you use it in an enterprise setting" license.
 * `scoop` saves the day again : `(scoop bucket add java) -and (scoop install openjdk17)`
 #### Step 3 :
-Build the android project using **Ctrl+Shift+B** or **remote debug** or if you are lucky enough to have a device that can **run Android Emulator** (either a Mac or Linux device with 129471241 dependencies installed) run it there (and maybe enjoy some grilling on your computer while it tries to work). It should work, after I suffered to fix the './android' directory and it's gradle.
+Build the android project using **Ctrl+Shift+B** or **remote debug** or if you are lucky enough to have a device that can **run Android Emulator** (either a Mac or Linux device with 129471241 dependencies installed) run it there (and maybe enjoy some grilling on your computer while it tries to work). It should work, after I suffered to fix the './android' directory and it's gradle. <br>
+Ignore the errors, it means that it works totally fine and will definitely not cause problems (all of them are sourced from the flutter libraries anyways). Only report errors that causes gradle to not compile the main application.
 #### Note : 
 Android building may not work because protobuf doesn't output and add to the sourcesets.
 

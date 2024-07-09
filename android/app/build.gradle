@@ -31,7 +31,6 @@ if (flutterVersionName == null) {
 
 // A protobuf version that should exists both with protoc + protoc-gen-lite (compile) and protobuf-javalite
 def protocVer = "3.19.6"
-// def protocGenerateFilesDir = "$projectDir/src/main/java/protobuf_gen"
 
 // com.android.application + kotlin-android
 android {
@@ -64,6 +63,7 @@ android {
     sourceSets {
         main {
             java {
+                // TODO : Determine release / debug, both files existing will cause issues and will require "gradlew clear" before compile
                 srcDirs "src/main/java", "src/main/kotlin", "$buildDir/generated/source/proto/"
             }
             proto {
@@ -119,7 +119,11 @@ flutter {
 dependencies {
     implementation project(":pcf-core")
 
-    implementation group: "com.android.support", name: "appcompat-v7", version: "28.0.0"
+    implementation 'androidx.annotation:annotation:1.8.0'
+    // implementation group: "com.android.support", name: "appcompat-v7", version: "28.0.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+
+    implementation 'androidx.annotation:annotation:1.8.0'
    
     // 2 packages of protobuf exists : the protobuf-java and protobuf-javalite (and the other kotlin/whatever versions)
     // (the protobuf-lite is the very deprecated package)
@@ -137,6 +141,9 @@ dependencies {
     implementation "androidx.room:room-runtime:2.4.0"
     annotationProcessor "androidx.room:room-compiler:2.4.0"
     implementation "androidx.sqlite:sqlite:2.1.0"
+    // autogenerate getter + setter, because this repo probably just doesn't work on anyone else's machine except the author's.
+    // lombok is apparently probably an ide step.
+    compileOnly 'org.projectlombok:lombok:1.18.34'
 
     // --
     // https://stackoverflow.com/questions/52590101/could-not-find-method-testimplementation-for-arguments-junitjunit4-12
