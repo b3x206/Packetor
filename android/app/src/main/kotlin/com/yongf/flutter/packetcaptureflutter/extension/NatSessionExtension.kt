@@ -6,7 +6,7 @@ import android.graphics.Bitmap
 import com.google.protobuf.ByteString
 import com.minhui.vpn.nat.NatSession
 import com.minhui.vpn.processparse.AppInfo
-import com.yongf.flutter.packetcaptureflutter.common.Packages
+// import com.yongf.flutter.packetcaptureflutter.common.Packages
 import com.yongf.flutter.packetcaptureflutter.db.NatSessionEntity
 import com.yongf.flutter.packetcaptureflutter.model.NatSessionModel
 import java.io.ByteArrayOutputStream

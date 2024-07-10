@@ -3,6 +3,7 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    // - Other plugins
     id "com.google.protobuf" version "0.9.4"
 }
 // --
@@ -31,6 +32,7 @@ if (flutterVersionName == null) {
 
 // A protobuf version that should exists both with protoc + protoc-gen-lite (compile) and protobuf-javalite
 def protocVer = "3.19.6"
+def protobufLiteVer = "3.19.6"
 
 // com.android.application + kotlin-android
 android {
@@ -64,7 +66,9 @@ android {
         main {
             java {
                 // TODO : Determine release / debug, both files existing will cause issues and will require "gradlew clear" before compile
-                srcDirs "src/main/java", "src/main/kotlin", "$buildDir/generated/source/proto/"
+                //        It is required for the proto/ directory
+                srcDirs += "$buildDir/generated/source/proto/"
+                // += "src/main/java", "src/main/kotlin"
             }
             proto {
                 srcDir "src/main/proto"
@@ -95,17 +99,19 @@ protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:$protocVer"
     }
-    plugins {
-        javalite {
-            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-        }
-    }
+    // plugins {
+    //     javalite {
+    //         artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+    //     }
+    // }
 
     generateProtoTasks {
         // [!!] 'ofSourceSet("main")' ignores OS.android
         all().each { task ->
             task.plugins {
-                javalite { }
+                // javalite { }
+                java { }
+                kotlin { }
             }
         }
     }
@@ -128,22 +134,16 @@ dependencies {
     // 2 packages of protobuf exists : the protobuf-java and protobuf-javalite (and the other kotlin/whatever versions)
     // (the protobuf-lite is the very deprecated package)
     // implementation "com.google.protobuf:protobuf-lite:3.0.1"
-    implementation "com.google.protobuf:protobuf-javalite:$protocVer"
-    implementation "com.google.protobuf:protobuf-kotlin-lite:$protocVer"
-    // implementation ("com.squareup.retrofit2:converter-protobuf:2.5.0") {
+    implementation "com.google.protobuf:protobuf-javalite:$protobufLiteVer"
+    implementation "com.google.protobuf:protobuf-kotlin-lite:$protobufLiteVer"
     implementation ("com.squareup.retrofit2:converter-protobuf:2.11.0") {
         exclude group: "com.google.protobuf", module: "protobuf-java"
     }
 
-    // Room (these also require androidx migration)
-    // implementation "android.arch.persistence.room:runtime:1.1.1"
-    // annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    // Room (because we need more convoluted ways of storing a class)
     implementation "androidx.room:room-runtime:2.4.0"
     annotationProcessor "androidx.room:room-compiler:2.4.0"
     implementation "androidx.sqlite:sqlite:2.1.0"
-    // autogenerate getter + setter, because this repo probably just doesn't work on anyone else's machine except the author's.
-    // lombok is apparently probably an ide step.
-    compileOnly 'org.projectlombok:lombok:1.18.34'
 
     // --
     // https://stackoverflow.com/questions/52590101/could-not-find-method-testimplementation-for-arguments-junitjunit4-12
@@ -152,8 +152,3 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:1.0.2"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
 }
-
-// Has to be appended :/. for the time being, clear it yourself.
-// tasks.register("clean", Delete) {
-//     delete protocGenerateFilesDir
-// }

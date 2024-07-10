@@ -1,8 +1,4 @@
-plugins {
-    // lombok only works in build.gradle, otherwise throws a cryptic casting error
-    id 'io.franzbecker.gradle-lombok' version '5.0.0'
-}
-
+// [!!] Main build.gradle is this one [!!]
 // kotlin ver is declared in : ./settings.gradle
 allprojects {
     repositories {
