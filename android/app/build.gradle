@@ -4,13 +4,10 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
     // - Other plugins
-    id "com.google.protobuf" version "0.9.4"
+    // Note : generatedFilesBaseDir is deprecated in 0.9.2, because why would you include generated code anyways right?
+    // it's like you won't use it's stubs or somethings. https://github.com/google/protobuf-gradle-plugin/pull/636
+    id "com.google.protobuf" version "0.9.1"
 }
-// --
-// apply plugin: "com.android.application"
-// apply plugin: "kotlin-android"
-// apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-// apply plugin: "com.google.protobuf"
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
@@ -38,7 +35,7 @@ def protobufLiteVer = "3.19.6"
 android {
     namespace = "com.yongf.flutter.packetcaptureflutter"
     compileSdk = flutter.compileSdkVersion
-    // ndkVersion = flutter.ndkVersion // Unused for this app?
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -48,13 +45,12 @@ android {
     defaultConfig {
         applicationId = "com.yongf.flutter.packetcaptureflutter"
         minSdkVersion = flutter.minSdkVersion
-        // targetSdkVersion = 28
         targetSdkVersion = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
-        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
 
-        // idk what this does, could be from older gradle.
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        // handles the androidx.room sql thing
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation" : "$projectDir/schemas".toString()]
@@ -65,20 +61,14 @@ android {
     sourceSets {
         main {
             java {
-                // TODO : Determine release / debug, both files existing will cause issues and will require "gradlew clear" before compile
+                // TODO : Determine release || debug, both files existing will cause issues and will require "gradlew clear" before compile
                 //        It is required for the proto/ directory
-                srcDirs += "$buildDir/generated/source/proto/"
-                // += "src/main/java", "src/main/kotlin"
+                // srcDirs += "$buildDir/generated/source/proto/"
             }
             proto {
                 srcDir "src/main/proto"
-                // include "**.proto"
             }
         }
-    }
-
-    lintOptions {
-        disable "InvalidPackage"
     }
 
     buildTypes {
@@ -94,25 +84,24 @@ android {
 // [i] https://github.com/google/protobuf-gradle-plugin/blob/master/examples/exampleProject/build.gradle
 protobuf {
     // This is apparently where you add this : https://stackoverflow.com/a/52685219
-    // generatedFilesBaseDir = protocGenerateFilesDir
+    generatedFilesBaseDir = "$projectDir/src/main/protoc-gen"
 
     protoc {
         artifact = "com.google.protobuf:protoc:$protocVer"
     }
-    // plugins {
-    //     javalite {
-    //         artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-    //     }
-    // }
 
     generateProtoTasks {
         // [!!] 'ofSourceSet("main")' ignores OS.android
         all().each { task ->
-            task.plugins {
-                // javalite { }
-                java { }
-                kotlin { }
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
             }
+            // task.plugins {
+                // // java { }
+                // // kotlin { }
+            // }
         }
     }
 }
@@ -126,17 +115,13 @@ dependencies {
     implementation project(":pcf-core")
 
     implementation 'androidx.annotation:annotation:1.8.0'
-    // implementation group: "com.android.support", name: "appcompat-v7", version: "28.0.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
-
     implementation 'androidx.annotation:annotation:1.8.0'
    
-    // 2 packages of protobuf exists : the protobuf-java and protobuf-javalite (and the other kotlin/whatever versions)
-    // (the protobuf-lite is the very deprecated package)
-    // implementation "com.google.protobuf:protobuf-lite:3.0.1"
-    implementation "com.google.protobuf:protobuf-javalite:$protobufLiteVer"
-    implementation "com.google.protobuf:protobuf-kotlin-lite:$protobufLiteVer"
-    implementation ("com.squareup.retrofit2:converter-protobuf:2.11.0") {
+    // For transiency, use api instead of implementation : https://stackoverflow.com/a/44493379
+    api "com.google.protobuf:protobuf-javalite:$protobufLiteVer"
+    // api "com.google.protobuf:protobuf-kotlin-lite:$protobufLiteVer"
+    implementation ("com.squareup.retrofit2:converter-protobuf:2.9.0") {
         exclude group: "com.google.protobuf", module: "protobuf-java"
     }
 
