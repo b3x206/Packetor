@@ -36,8 +36,12 @@ If not, **install the appopriate java version** that the gradle supports with yo
 #### Step 3 :
 Build the android project using **Ctrl+Shift+B** or **remote debug** or if you are lucky enough to have a device that can **run Android Emulator** (either a Mac or Linux device with 129471241 dependencies installed) run it there (and maybe enjoy some grilling on your computer while it tries to work). It should work, after I suffered to fix the './android' directory and it's gradle. <br>
 Ignore the errors, it means that it works totally fine and will definitely not cause problems (all of them are sourced from the flutter libraries anyways). Only report errors that causes gradle to not compile the main application.
-#### Note : 
-Android building may not work because protobuf doesn't output and add to the sourcesets.
+#### Note(s) : 
+- Android building may not work if you built both debug then release or the other way around.
+- * To fix this, simply go into [./android/app/src/main/protoc-gen/](./android/app/src/main/protoc-gen/) if it exists and delete that file.
+- * This is a known issue and has to be fixed from the build type and select those correct srcDirs.
+- Passthrough VPN enabling (to trace packages) may crash (which really is the main function)
+- * Will fix. If happens send crash logcat. (use `adb logcat --buffer=crash` for just crash captures)
 
 ### IOS
 I am poor so I do not have an apple device (or the ability to buy anything other than a potato with cables) that can run the recent MacOS. So no IOS (+ i doubt packet tracing is possible in IOS because of how much they limit everything)

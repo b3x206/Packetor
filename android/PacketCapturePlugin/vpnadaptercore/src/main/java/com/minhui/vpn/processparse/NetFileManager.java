@@ -56,7 +56,7 @@ public class NetFileManager {
     }
 
     static class InnerClass {
-        static NetFileManager instance=new NetFileManager();
+        static NetFileManager instance = new NetFileManager();
     }
     public static NetFileManager getInstance(){
         return InnerClass.instance;
@@ -133,20 +133,12 @@ public class NetFileManager {
         }
         netInfo.setSourPort(strToInt(sSourceItem[1], 16, 0));
 
-
-
-
         sTmp = sSplitItem[DATA_REMOTE];
         String sDesItem[] = sTmp.split(":");
         if (sDesItem.length < 2) {
             return null;
         }
         netInfo.setPort(strToInt(sDesItem[1], 16, 0));
-
-
-
-
-
 
         sTmp = sDesItem[0];
         int len = sTmp.length();
@@ -183,10 +175,8 @@ public class NetFileManager {
         if (netInfo == null) {
             return;
         }
-     //   VPNLog.d(TAG, "saveToMap  port " + netInfo.getSourPort() + " uid " + netInfo.getUid());
-
+        // VPNLog.d(TAG, "saveToMap  port " + netInfo.getSourPort() + " uid " + netInfo.getUid());
         processHost.put(netInfo.getSourPort(), netInfo.getUid());
-
     }
 
     public void read(int type) {
@@ -195,7 +185,6 @@ public class NetFileManager {
                 case TYPE_TCP:
                     String[] ARGS = {"cat", "/proc/net/tcp"};
                     execute(ARGS, "/", TYPE_TCP);
-
                     break;
                 case TYPE_TCP6:
                     String[] ARGS1 = {"cat", "/proc/net/tcp6"};
@@ -226,7 +215,6 @@ public class NetFileManager {
         }
     }
 
-
     public void refresh() {
         long start = SystemClock.currentThreadTimeMillis();
         for (int i = 0; i < TYPE_MAX; i++) {
@@ -240,7 +228,7 @@ public class NetFileManager {
 
     public Integer getUid(int port) {
         Integer uid = processHost.get(port);
-     //   VPNLog.i(TAG, "getUid : port is   " + port + "   uid is " + uid);
+        // VPNLog.i(TAG, "getUid : port is   " + port + "   uid is " + uid);
         return uid;
     }
 }

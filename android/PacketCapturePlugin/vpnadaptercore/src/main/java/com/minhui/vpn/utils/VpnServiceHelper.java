@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-
 import com.minhui.vpn.VPNConstants;
 import com.minhui.vpn.nat.NatSession;
 import com.minhui.vpn.processparse.PortHostService;
@@ -31,8 +30,8 @@ public class VpnServiceHelper {
 
     public static void onVpnServiceCreated(FirewallVpnService vpnService) {
         sVpnService = vpnService;
-        if(context==null){
-            context=vpnService.getApplicationContext();
+        if(context == null){
+            context = vpnService.getApplicationContext();
         }
     }
 
@@ -40,13 +39,11 @@ public class VpnServiceHelper {
         sVpnService = null;
     }
 
-
     public static Context getContext() {
         return context;
     }
 
     public static boolean isUDPDataNeedSave() {
-
         sp = context.getSharedPreferences(VPNConstants.VPN_SP_NAME, Context.MODE_PRIVATE);
         return sp.getBoolean(VPNConstants.IS_UDP_NEED_SAVE, false);
     }

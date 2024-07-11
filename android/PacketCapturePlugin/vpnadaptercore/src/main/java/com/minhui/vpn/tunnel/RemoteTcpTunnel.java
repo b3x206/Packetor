@@ -38,9 +38,7 @@ public class RemoteTcpTunnel extends RawTcpTunnel {
 
         helper = new TcpDataSaveHelper(helperDir);
         handler = new Handler(Looper.getMainLooper());
-
     }
-
 
     @Override
     protected void afterReceived(ByteBuffer buffer) throws Exception {

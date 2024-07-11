@@ -11,7 +11,6 @@ import com.yongf.flutter.packetcaptureflutter.util.CrashHandler;
  * @since 2019-04-21.
  */
 public final class SdkInitHelper {
-
     private static final String TAG = SdkInitHelper.class.getSimpleName();
 
     public static void init(Application app) {

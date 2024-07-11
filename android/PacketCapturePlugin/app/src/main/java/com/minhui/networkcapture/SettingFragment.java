@@ -94,11 +94,8 @@ public class SettingFragment extends BaseFragment {
 
     private void clearHistoryData() {
         ThreadProxy.getInstance().execute(new Runnable() {
-
-
             @Override
             public void run() {
-
                 File file = new File(VPNConstants.BASE_DIR);
                 FileUtils.deleteFile(file, new FileFilter() {
                     @Override
@@ -127,11 +124,8 @@ public class SettingFragment extends BaseFragment {
                         showMessage(getString(R.string.success_clear_history_data));
                     }
                 });
-
             }
         });
-
-
     }
 
     private void showMessage(String string) {
