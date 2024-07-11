@@ -1,10 +1,38 @@
 // [!!] Main build.gradle is this one [!!]
 // kotlin ver is declared in : ./settings.gradle
 // ---
+buildscript {
+    ext.kotlin_version = "1.8.22"
+    repositories {
+        google()
+        mavenCentral()
+    }
+    // idk this works without buildscript
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // other classpath dependencies
+    }
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+    configurations.all {
+        resolutionStrategy {
+            // force "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            // force "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+            // force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+            // force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+            // -- how to create dependency graph? (legit tutorial 2024)
+            // step a : don't use gradlew dependencyInsight.
+            // step b : write a wrong package version with correct package name here.
+            // -- congratulation
+            // force "androidx.core:core:1.2.0-rc02"
+            // force "androidx.core:core-ktx:1.2.0-rc02"
+        }
     }
     
     // Can be used to add arguments to the compiled java projects,

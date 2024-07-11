@@ -4,8 +4,9 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
     // - Other plugins
-    // Note : generatedFilesBaseDir is deprecated in 0.9.2, because why would you include generated code anyways right?
+    // Note : generatedFilesBaseDir is deprecated in 0.9.2, because why would you include and use generated code anyways right?
     // it's like you won't use it's stubs or somethings. https://github.com/google/protobuf-gradle-plugin/pull/636
+    // ... stupid crap ... other apps like 'jbitcoin' did migrate to not generating inside the 'src/main' but mine works like this.
     id "com.google.protobuf" version "0.9.1"
 }
 
@@ -64,6 +65,9 @@ android {
                 // TODO : Determine release || debug, both files existing will cause issues and will require "gradlew clear" before compile
                 //        It is required for the proto/ directory
                 // srcDirs += "$buildDir/generated/source/proto/"
+
+                // lol, this is solution to compile java inside kotlin path.
+                srcDirs += "$projectDir/src/main/kotlin"
             }
             proto {
                 srcDir "src/main/proto"
@@ -114,12 +118,13 @@ flutter {
 dependencies {
     implementation project(":pcf-core")
 
-    implementation 'androidx.annotation:annotation:1.8.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
     implementation "androidx.appcompat:appcompat:1.6.1"
-    implementation 'androidx.annotation:annotation:1.8.0'
-   
+    implementation "androidx.annotation:annotation:1.8.0"
+
     // For transiency, use api instead of implementation : https://stackoverflow.com/a/44493379
-    api "com.google.protobuf:protobuf-javalite:$protobufLiteVer"
+    implementation "com.google.protobuf:protobuf-javalite:$protobufLiteVer"
     // api "com.google.protobuf:protobuf-kotlin-lite:$protobufLiteVer"
     implementation ("com.squareup.retrofit2:converter-protobuf:2.9.0") {
         exclude group: "com.google.protobuf", module: "protobuf-java"
