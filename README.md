@@ -42,6 +42,11 @@ Ignore the errors, it means that it works totally fine and will definitely not c
 - * This is a known issue and has to be fixed from the build type and select those correct srcDirs.
 - Passthrough VPN enabling (to trace packages) may crash (which really is the main function)
 - * Will fix. If happens send crash logcat. (use `adb logcat --buffer=crash` for just crash captures)
+- * As a temp fix, i enable some debug features on release build and it works. Great! Very stable!
+- To get proper tags for the logs, which shows that the app works (weird)
+- * `adb logcat -s "com.yongf.flutter.packetcaptureflutter" FirewallVpnService MyCrash CaptureFragment PackageListActivity PacketDetailActivity Packet UDPServer EasyFirewall PacketTraceInterop flutter VpnServiceHelper # TODO : Add more tags, search by ctrl+shift+f "String TAG"`
+#### TODO : 
+* [ ] Fix crashing on release build without any debug option.
 
 ### IOS
 I am poor so I do not have an apple device (or the ability to buy anything other than a potato with cables) that can run the recent MacOS. So no IOS (+ i doubt packet tracing is possible in IOS because of how much they limit everything)

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:packet_capture_flutter/model/nat_session.pb.dart';
 import 'package:packet_capture_flutter/session/nat_session_manager.dart';
@@ -23,16 +24,16 @@ class NatSessionDelegate {
     return 'flutter.yongf.com/pcf/session';
   }
 
-  Future<dynamic> requestSessions() async {
-    Completer completer = new Completer();
+  Future<ByteData> requestSessions() async {
+    Completer<ByteData> completer = new Completer();
     // BinaryMessages
     var bMessages = ServicesBinding.instance.defaultBinaryMessenger;
     bMessages.setMessageHandler(_channel, (ByteData? message) {
-      _data = message;
-      completer.complete(message);
-      bMessages.setMessageHandler(_channel, null);
-      return null;
+      debugPrint("ByteData message : ${message}, is null : ${message == null}, length : ${message?.lengthInBytes}");
 
+      _data = message;
+      completer.complete(message ?? ByteData(0));
+      bMessages.setMessageHandler(_channel, null);
       // return _data;
     });
 

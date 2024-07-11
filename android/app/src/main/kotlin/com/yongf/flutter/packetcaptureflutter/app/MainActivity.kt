@@ -43,13 +43,18 @@ import kotlin.jvm.java
 
 class MainActivity : FlutterActivity() {
     companion object {
-        const val CHANNEL = "pcf.flutter.yongf.com/battery"
+        const val BATTERY_CHANNEL = "pcf.flutter.yongf.com/battery"
         const val PCF_CHANNEL = "flutter.yongf.com/pcf"
         const val PCF_TRANSFER_SESSION = "flutter.yongf.com/pcf/session"
 
         const val ARG_SESSION_DIR = "session_dir"
         const val ARG_SESSION = "session"
         const val ARG_DIR = "dir"
+
+        /**
+         * Tag used for the callbacks.
+         */
+        const val CB_TAG = "PacketTraceInterop"
     }
 
     private lateinit var methodChannel: MethodChannel
@@ -98,9 +103,14 @@ class MainActivity : FlutterActivity() {
         val dartExec = flutterEngine!!.getDartExecutor()
         val messenger = dartExec.getBinaryMessenger()
         // Get default messenger
-        // tf is a channel codec, is this ffmpeg or just a callback interceptor? (it's neither most likely)
-        methodChannel = MethodChannel(dartExec, CHANNEL)
+        // tf is a channel codec, is this ffmpeg or just a interop thing (interop thing apparently)
+        // man these java/kotlin devs, i tell you, they are doing some things. don't let them cook bruh fr fr no cap ong skibidi
+        // we got callback codec before gta 6 (insert laughing ai rick from rick and morty)
+        methodChannel = MethodChannel(dartExec, BATTERY_CHANNEL)
         methodChannel.setMethodCallHandler({ call, result ->
+            Log.d(CB_TAG, "[" + BATTERY_CHANNEL + "] call.method= " + call.method);
+
+            // idk why 'startVPN' and 'stopVPN' uses the battery channel, but ok. won't question it..
             when {
                 call.method == "getBatteryLevel" -> {
                     handleGetBatteryLevel(result)
@@ -115,6 +125,8 @@ class MainActivity : FlutterActivity() {
 
         pcfChannel = MethodChannel(dartExec, PCF_CHANNEL)
         pcfChannel.setMethodCallHandler { call, result ->
+            Log.d(CB_TAG, "[" + PCF_CHANNEL + "] call.method= " + call.method);
+
             when (call.method) {
                 "transfer" -> transfer()
                 else -> result.notImplemented()
@@ -123,6 +135,8 @@ class MainActivity : FlutterActivity() {
 
         pcfSessionChannel = MethodChannel(dartExec, PCF_TRANSFER_SESSION)
         pcfSessionChannel.setMethodCallHandler { call, result ->
+            Log.d(CB_TAG, "[" + PCF_TRANSFER_SESSION + "] call.method= " + call.method);
+
             when (call.method) {
                 "transferSessionByDir" -> transferSessionByDir(call)
                 "saveSession" -> saveSession(call, result)
@@ -211,10 +225,13 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun requestSessions(result: MethodChannel.Result) {
-        // result.success(allNetConnection)
-        result.success("All Sessions from Android")
+        result.success(allNetConnection)
+        // result.success("All Sessions from Android")
     }
 
+    /**
+     * Get the NatSession data from the given VPN.
+     */
     private fun getData() {
         ThreadProxy.getInstance().execute {
             var sessions: MutableList<NatSession> = mutableListOf()
@@ -227,16 +244,19 @@ class MainActivity : FlutterActivity() {
             val packageName = packageName
 
             val sp = getSharedPreferences(VPNConstants.VPN_SP_NAME, Context.MODE_PRIVATE)
-            val isShowUDP = sp.getBoolean(VPNConstants.IS_UDP_SHOW, false)
+            val isShowUDP = sp.getBoolean(VPNConstants.IS_UDP_SHOW, true)
             val selectPackage = sp.getString(DEFAULT_PACKAGE_ID, null)
 
+            // Filter data
             while (iterator.hasNext()) {
                 val next = iterator.next()
                 if (next.bytesSent == 0 && next.receiveByteNum == 0L) {
+                    Log.d(CB_TAG, "[getData] = eliminate connection " + next + " for no bytes sent")
                     iterator.remove()
                     continue
                 }
                 if (NatSession.UDP == next.type && !isShowUDP) {
+                    Log.d(CB_TAG, "[getData] = eliminate connection " + next + " for being UDP")
                     iterator.remove()
                     continue
                 }
@@ -245,18 +265,17 @@ class MainActivity : FlutterActivity() {
                 if (appInfo != null) {
                     val appPackageName = appInfo.pkgs.getAt(0)
                     if (packageName == appPackageName) {
+                        Log.d(CB_TAG, "[getData] = eliminate connection " + next + " for being Packetor")
                         iterator.remove()
                         continue
                     }
                     if (selectPackage != null && selectPackage != appPackageName) {
+                        Log.d(CB_TAG, "[getData] = eliminate connection " + next + " for being filtered out (filter = " + selectPackage + ")")
                         iterator.remove()
                     }
                 }
             }
-            // eh can stay as is, it's lateinit (?)
-            if (handler == null) {
-                return@execute
-            }
+    
             handler.post { refreshData(sessions) }
         }
     }
@@ -282,9 +301,12 @@ class MainActivity : FlutterActivity() {
 
     private fun transfer() {
         val raw = allNetConnection.filter { natSession: NatSession ->
-            var result = natSession.bytesSent > 0 && natSession.receiveByteNum > 0
-            result = result && natSession.appInfo?.pkgs?.getAt(0) != null
-            result
+            // TODO : Application gathering is broken in lib level.
+            // var result = natSession.bytesSent > 0 && natSession.receiveByteNum > 0
+            // result = result && natSession.appInfo?.pkgs?.getAt(0) != null
+            // result
+            // natSession.receiveByteNum > 0
+            true
         }
         val sessionsBuilder = NatSessionModel.NatSessions.newBuilder()
         for (natSession in raw) {
@@ -292,6 +314,7 @@ class MainActivity : FlutterActivity() {
             sessionsBuilder.addSession(session)
         }
         val sessions = sessionsBuilder.build()
+        
         val bytes = sessions.toByteArray()
         val buffer = ByteBuffer.allocateDirect(bytes.size)
         buffer.put(bytes)
@@ -311,10 +334,7 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun refreshData(sessions: List<NatSession>) {
-        if (sessions == null) {
-            return
-        }
-        allNetConnection.clear()
+        allNetConnection.clear() // Just, don't do that? Idk..
         allNetConnection.addAll(sessions)
     }
 

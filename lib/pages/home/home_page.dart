@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -108,16 +110,11 @@ class _HomePageState extends State<HomePage> {
       body: _buildBody(),
       drawer: _buildDrawer(context),
       floatingActionButton: SexyFab(
-        itemCount: 3,
+        itemCount: 4,
         itemBuilder: (BuildContext context, int index) {
           return _buildSexyFab(index);
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-        // onPressed: _refreshSessions,
-        // tooltip: 'Packet Capture',
-        // child: _isPacketMode ? Icon(Icons.link) : Icon(Icons.link_off),
-      // ),
     );
   }
 
@@ -209,6 +206,8 @@ class _HomePageState extends State<HomePage> {
         return _refresh();
       case 2:
         return _autoRefresh();
+      case 3:
+        return _refreshNoVpn();
     }
     return Container();
   }
@@ -250,6 +249,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _refreshNoVpn() {
+      return Container(
+      child: FloatingActionButton(
+        heroTag: 'image',
+        onPressed: _refreshSessionsWithoutVpn,
+        tooltip: 'Refresh (without VPN)',
+        child: Icon(Icons.history),
+      ),
+    );
+  }
+
   Widget _buildBody() {
     return Padding(
       padding: EdgeInsets.only(top: 5),
@@ -260,20 +270,41 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refreshSessions() async {
+    return _refreshSessionsBase(true);
+  }
+  Future<void> _refreshSessionsWithoutVpn() async {
+    return _refreshSessionsBase(false);
+  }
+
+  Future<void> _refreshSessionsBase(bool setPacketModeIfNot) async {
     var result;
     try {
-      if (!_isPacketMode) {
+      if (!_isPacketMode && setPacketModeIfNot) {
+        debugPrint("Changing vpn status because !_isPacketMode");
         await _changeVpnStatus();
       }
+
       NatSessionDelegate delegate = NatSessionDelegate();
       ByteData message = await delegate.requestSessions();
       List<int> bytes = message.buffer
         .asUint8List(message.offsetInBytes, message.lengthInBytes);
+      debugPrint("Gather bytes for message on 'requestSessions' for the NatSession. Length : ${bytes.length}, buffer len : ${message.elementSizeInBytes}");
+
+      inspect(bytes);
+      inspect(ascii.decode(bytes, allowInvalid: true));
+
+      // hmm, this makes the result empty. this is from generated code.
       result = NatSessions.fromBuffer(bytes);
+      debugPrint("Converted protobuf.");
     } on PlatformException catch (e) {
       debugPrint('PlatformException: ${e.message}');
     }
+
     setState(() {
+      // TODO : only do if debug, this applies to more outputs.
+      debugPrint("Protobuf result is : ${result} which when inspected :");
+      inspect(result);
+
       _protobuf = result;
     });
   }

@@ -35,11 +35,11 @@ public class NatSession implements Serializable {
     public long vpnStartTime;
     public boolean isHttp;
 
-    @Override
-    public String toString() {
-        return String.format("%s/%s:%d packet: %d", remoteHost, CommonMethods.ipIntToString(remoteIP),
-                remotePort & 0xFFFF, packetSent);
-    }
+    // @Override
+    // public String toString() {
+    //     return String.format("%s/%s:%d packet: %d", remoteHost, CommonMethods.ipIntToString(remoteIP),
+    //             remotePort & 0xFFFF, packetSent);
+    // }
 
     public String getUniqueName() {
         String uinID = ipAndPort + connectionStartTime;
@@ -163,5 +163,29 @@ public class NatSession implements Serializable {
             }
             return Long.compare(o2.lastRefreshTime, o1.lastRefreshTime);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "type " + type + "\n" +
+        "ipAndPort " + ipAndPort + "\n" +
+        "remoteIP " + remoteIP + "\n" +
+        "remotePort " + remotePort + "\n" +
+        "remoteHost " + remoteHost + "\n" +
+        "localIP " + localIP + "\n" +
+        "localPort " + localPort + "\n" +
+        "bytesSent " + bytesSent + "\n" +
+        "packetSent " + packetSent + "\n" +
+        "receiveByteNum " + receiveByteNum + "\n" +
+        "receivePacketNum " + receivePacketNum + "\n" +
+        "lastRefreshTime " + lastRefreshTime + "\n" +
+        "isHttpsSession " + isHttpsSession + "\n" +
+        "requestUrl " + requestUrl + "\n" +
+        "pathUrl " + pathUrl + "\n" +
+        "method " + method + "\n" +
+        "appInfo " + appInfo + "\n" +
+        "connectionStartTime  " + connectionStartTime  + "\n" +
+        "vpnStartTime " + vpnStartTime + "\n" +
+        "isHttp " + isHttp + "\n";
     }
 }

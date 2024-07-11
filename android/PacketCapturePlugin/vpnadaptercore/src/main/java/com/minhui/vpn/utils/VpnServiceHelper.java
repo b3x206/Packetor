@@ -1,5 +1,6 @@
 package com.minhui.vpn.utils;
 
+import android.util.Log;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,8 @@ import java.util.List;
  * Created by zengzheying on 16/1/12.
  */
 public class VpnServiceHelper {
+    private static final String TAG = "VpnServiceHelper";
+
     static Context context;
     public static final int START_VPN_SERVICE_REQUEST_CODE = 2015;
     private static FirewallVpnService sVpnService;
@@ -92,14 +95,13 @@ public class VpnServiceHelper {
             return null;
         }
         try {
-            File file = new File(VPNConstants.CONFIG_DIR +FirewallVpnService. lastVpnStartTimeFormat);
+            File file = new File(VPNConstants.CONFIG_DIR + FirewallVpnService. lastVpnStartTimeFormat);
             ACache aCache = ACache.get(file);
             String[] list = file.list();
             ArrayList<NatSession> baseNetSessions = new ArrayList<>();
-            if(list!=null){
-
+            if (list != null) {
                 for (String fileName : list) {
-                    NatSession netConnection = (NatSession) aCache.getAsObject(fileName);
+                    NatSession netConnection = (NatSession)aCache.getAsObject(fileName);
                     baseNetSessions.add(netConnection);
                 }
             }
@@ -112,8 +114,11 @@ public class VpnServiceHelper {
                 }
             }
             Collections.sort(baseNetSessions, new NatSession.NatSesionComparator());
+
+            // Log.d(TAG, "[getAllSession] baseNetSessions.length : " + baseNetSessions.size() + " which is the list of NAT sent by the VPN library.");
             return baseNetSessions;
-        }catch (Exception e){
+        } catch (Exception e) {
+            Log.e(TAG, "[getAllSession] Error occured : ", e);
             return null;
         }
 
