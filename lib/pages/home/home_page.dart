@@ -83,7 +83,9 @@ class _HomePageState extends State<HomePage> {
     // print("build home");
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(onTap: () {}, child: Icon(Icons.menu)),
+        leading: InkWell(onTap: () {
+
+        }, child: Icon(Icons.menu)),
         title: Text(
           _title,
           style: TextStyle(fontSize: 18),
@@ -98,7 +100,9 @@ class _HomePageState extends State<HomePage> {
               child: Icon(Icons.youtube_searched_for))),
           SizedBox(
             width: 60,
-            child: InkWell(onTap: () {}, child: Icon(Icons.layers_clear)))
+            child: InkWell(onTap: () {
+              Fluttertoast.showToast(msg: "TODO : Clear entries?");
+            }, child: Icon(Icons.layers_clear)))
         ],
       ),
       body: _buildBody(),
@@ -215,7 +219,7 @@ class _HomePageState extends State<HomePage> {
         heroTag: 'vpn',
         onPressed: _changeVpnStatus,
         tooltip: 'VPN',
-        child: !_isPacketMode ? Icon(Icons.link) : Icon(Icons.link_off),
+        child: !_isPacketMode ? Icon(Icons.check) : Icon(Icons.close),
       ),
     );
   }
@@ -225,7 +229,7 @@ class _HomePageState extends State<HomePage> {
       child: FloatingActionButton(
         heroTag: 'image',
         onPressed: _refreshSessions,
-        tooltip: 'Image',
+        tooltip: 'Refresh',
         child: Icon(Icons.refresh),
       ),
     );
@@ -240,7 +244,7 @@ class _HomePageState extends State<HomePage> {
             _enableAutoRefresh = !_enableAutoRefresh;
           });
         },
-        tooltip: 'EnableAutoRefresh',
+        tooltip: 'Enable Auto Refresh',
         child: Icon(_enableAutoRefresh ? Icons.layers : Icons.layers_clear),
       ),
     );

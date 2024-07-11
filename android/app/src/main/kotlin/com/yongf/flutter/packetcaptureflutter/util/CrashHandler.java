@@ -154,29 +154,34 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         String result = writer.toString();
         Log.e(TAG, result);
         sb.append(result);
+
         try {
             long timestamp = System.currentTimeMillis();
             String time = format.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".log";
-            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-                File dir = new File(root, "crash");
-                if (!dir.exists()) {
-                    FileHelper.mkdirs(dir.getAbsolutePath());
-                    Log.i(TAG, "mkdirs: " + dir.exists());
-                }
-                File file = new File(dir, fileName);
-                Log.e(TAG, file.getAbsolutePath());
-                file.createNewFile();
-                FileOutputStream fos = new FileOutputStream(file);
-                fos.write(sb.toString().getBytes());
-                Log.i(TAG, "saveCrashInfo2File: " + sb.toString());
-                fos.close();
+    
+            // Deprecated bruv
+            // String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+            String root = mContext.getExternalFilesDir(null).getParentFile().getAbsolutePath();
+            File dir = new File(root, "crash");
+            if (!dir.exists()) {
+                FileHelper.mkdirs(dir.getAbsolutePath());
+                Log.i(TAG, "mkdirs: " + dir.exists());
             }
+
+            File file = new File(dir, fileName);
+            Log.e(TAG, file.getAbsolutePath());
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(sb.toString().getBytes());
+            Log.i(TAG, "saveCrashInfo2File: " + sb.toString());
+            fos.close();
 
             return fileName;
         } catch (Exception e) {
-            Log.e(TAG, "an error occured while writing file...", e);
+            // mood really
+            Log.e(TAG, "An error occured while writing file...", e);
+            Log.e(TAG, "The crash details to write are : \n" + sb.toString());
         }
 
         return null;

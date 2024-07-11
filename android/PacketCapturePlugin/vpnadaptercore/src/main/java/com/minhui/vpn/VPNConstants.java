@@ -18,7 +18,7 @@ public interface VPNConstants {
         if (c == null) {
             throw new IllegalArgumentException("[VPNConstants::getBaseDirectory] Given context is null");
         }
-        return c.getExternalFilesDir(null) + RELATIVE_BASE_DIR;
+        return c.getExternalFilesDir(null).getParentFile().getAbsolutePath() + RELATIVE_BASE_DIR;
     }
     public static String getDataDirectory(Context c) {
         return getBaseDirectory(c) + "/data";

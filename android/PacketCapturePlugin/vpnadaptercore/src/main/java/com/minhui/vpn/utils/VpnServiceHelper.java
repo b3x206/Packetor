@@ -30,7 +30,7 @@ public class VpnServiceHelper {
 
     public static void onVpnServiceCreated(FirewallVpnService vpnService) {
         sVpnService = vpnService;
-        if(context == null){
+        if (context == null){
             context = vpnService.getApplicationContext();
         }
     }

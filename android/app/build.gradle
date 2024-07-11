@@ -80,6 +80,12 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+
+            // Fun fact : disabling minify fixes the application crash. Now it doesn't function due to an SSL malfunction, but will try to fix.
+            // debuggable true
+            minifyEnabled false // Or true if you want to enable ProGuard/R8
+            shrinkResources false
+            buildConfigField "boolean", "ENABLE_SSL_DEBUG", "true"
         }
     }
 }
