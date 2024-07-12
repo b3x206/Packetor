@@ -46,7 +46,9 @@ Ignore the errors, it means that it works totally fine and will definitely not c
 - To get proper tags for the logs, which shows that the app works (weird)
 - * `adb logcat -s "com.yongf.flutter.packetcaptureflutter" FirewallVpnService MyCrash CaptureFragment PackageListActivity PacketDetailActivity Packet UDPServer EasyFirewall PacketTraceInterop flutter VpnServiceHelper # TODO : Add more tags, search by ctrl+shift+f "String TAG"`
 #### TODO : 
-* [ ] Fix crashing on release build without any debug option.
+1. [ ] Fix crashing on release build without any debug option(s).
+1. [ ] Use mmap to record requests in real time and save them to a file, and then read the data from the file for display?
+2. [ ] Fix the data confusion problem
 
 ### IOS
 I am poor so I do not have an apple device (or the ability to buy anything other than a potato with cables) that can run the recent MacOS. So no IOS (+ i doubt packet tracing is possible in IOS because of how much they limit everything)
@@ -145,7 +147,3 @@ Probably related with the saving functionality.
   }
 ]
 ```
-
-## TODO List
-1. Use mmap to record requests in real time and save them to a file, and then read the data from the file for display?
-2. Fix the data confusion problem ...
